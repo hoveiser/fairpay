@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FairPay - AI-Audited Payroll on GenLayer</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+p { margin:0.5rem 0; line-height:1.7; }
+li { margin-bottom:0.5rem; }
+h3 { margin-bottom:0.5rem; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:linear-gradient(135deg,#F7B733 0%,#FC4A1A 50%,#110FFF 100%); color:white; min-height:100vh; padding:2rem; }
+.container { max-width:900px; margin:0 auto; }
+h1 { font-size:3rem; margin-bottom:1rem; text-align:center; }
+.subtitle { font-size:1.25rem; text-align:center; margin-bottom:3rem; opacity:0.9; }
+.card { background:rgba(255,255,255,0.1); backdrop-filter:blur(10px); border-radius:16px; padding:2rem; margin-bottom:2rem; border:1px solid rgba(255,255,255,0.2); }
+h2 { font-size:1.75rem; margin-bottom:1rem; }
+.contract-address { background:rgba(0,0,0,0.3); padding:1rem; border-radius:8px; font-family:'Courier New',monospace; font-size:0.875rem; word-break:break-all; margin:1rem 0; }
+.btn { display:inline-block; background:white; color:#110FFF; padding:0.75rem 1.5rem; border-radius:8px; text-decoration:none; font-weight:600; margin:0.5rem 0.5rem 0.5rem 0; }
+.feature { background:rgba(255,255,255,0.05); padding:1rem; border-radius:8px; margin:1rem 0; border-left:4px solid #00FF66; }
+.test-case { background:rgba(0,0,0,0.2); padding:1rem; border-radius:8px; margin:1rem 0; }
+.status-paid { color:#00FF66; font-weight:bold; }
+.status-zero { color:#FF2B2B; font-weight:bold; }
+code { background:rgba(0,0,0,0.3); padding:0.25rem 0.5rem; border-radius:4px; font-family:'Courier New',monospace; font-size:0.875rem; }
+a.verify { color:#00FF66; }
+.version-badge { display:inline-block; background:#00FF66; color:#070707; padding:0.25rem 0.75rem; border-radius:999px; font-weight:700; font-size:0.8rem; margin-left:0.5rem; }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>💰 FairPay <span class="version-badge">v0.3.0</span></h1>
+<p class="subtitle">AI-Audited Payroll with Reserved-Liability Recovery &amp; Sealed Evidence on GenLayer</p>
+
+<div class="card">
+<h2>📋 Contract Details</h2>
+<p><strong>Network:</strong> GenLayer Testnet Bradbury (LIVE)</p>
+<p><strong>Contract Address:</strong></p>
+<div class="contract-address">0xf1C916eCeA8a26563D8DAfff99Fa15C4f46Bf523</div>
+<a href="https://studio.genlayer.com" class="btn" target="_blank">Open in GenLayer Studio →</a>
+<a href="https://github.com/hoveiser/fairpay" class="btn" target="_blank">View Source Code →</a>
+<a href="https://explorer-studio.genlayer.com/address/0xf1C916eCeA8a26563D8DAfff99Fa15C4f46Bf523" class="btn" target="_blank">View on Explorer →</a>
+</div>
+
+<div class="card">
+<h2>🎯 What is FairPay?</h2>
+<p>Workers submit evidence URLs; AI validators audit quality against an agreed rubric and vote a tier: <strong>HIGH 1.25×</strong> / <strong>MEDIUM 1.0×</strong> / <strong>LOW 0.75×</strong> / <strong>UNVERIFIABLE 0×</strong>. Payouts execute automatically from the employer's locked GEN budget.</p>
+<div class="feature">
+<h3>🔒 Reserved-Liability Recovery (v0.3.0):</h3>
+<p>Employer can only withdraw budget <em>above</em> the reserved liability (max period pay while open, exact pay when adjudicated) — finalize always stays funded.</p>
+</div>
+<div class="feature">
+<h3>🔏 Sealed Evidence (v0.3.0):</h3>
+<p>Evidence is sha256-sealed at submission; mutated evidence at audit time → <code>MISMATCH</code>, pay 0.</p>
+</div>
+<div class="feature">
+<h3>🧠 Exact Canonical Tiers + On-Chain Reasoning (v0.3.0):</h3>
+<p>AI returns JSON <code>{tier, reasoning}</code>; leader/validator consensus compares only the tier; explanation stored on-chain.</p>
+</div>
+</div>
+
+<div class="card">
+<h2>🧪 Test Results (v0.3.0 reference contract)</h2>
+<div class="test-case"><h3>A: Budget Guard</h3><p>12h vs 8 GEN → ❌ rejected</p><p><a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x5914a4d03691c3fd81cd69b9f0c309c16dd98e5b74d48a678f557ecea39356f3">verify →</a></p></div>
+<div class="test-case"><h3>B: Hours Cap</h3><p>50h vs cap 40 → ❌ rejected</p><p><a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x88e25fdce3aa81a161310242de21e9da42919869c9cb53650eb2c65e0326283b">verify →</a></p></div>
+<div class="test-case"><h3>C: Happy Path</h3><p>MEDIUM → <span class="status-paid">PAID 4 GEN</span></p><p><a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/
