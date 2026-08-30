@@ -42,6 +42,7 @@ def _fetch_evidence(items):
     return "|".join(parts_hash), "\n\n".join(parts_text)
 
 class FairPay(gl.Contract):
+    __gl_contract__ = True  # Explicit marker for loader
     jobs: TreeMap[str, str]
     periods: TreeMap[str, str]
     next_job: str
