@@ -18,7 +18,7 @@ A decentralized payroll system where workers submit evidence of their work, AI v
 
 1. **Reserved-liability recovery:** v0.2.0 allowed `recover_budget` to drain the whole budget while a period was open, breaking `finalize`. v0.3.0 reserves liability: `hours × rate × 1.25` while a period is submitted/disputed, exact `pay` when adjudicated. Recovery only withdraws the excess; finalize stays funded.
 
-2. **Evidence bound to submission-time contents:** `submit_period` seals sha256 of fetched evidence inside `strict_eq` (4xx/empty rejected at submission). `resolve_period` re-fetches and compares; mutated evidence → `MISMATCH`, pay 0.
+2. **Evidence bound to immutable contents:** `submit_period` accepts only canonical IPFS CID URLs (`https://ipfs.io/ipfs/<CID>`) and seals sha256 of fetched evidence inside `strict_eq` (4xx/empty rejected at submission). `resolve_period` re-fetches and compares; mutated evidence → `MISMATCH`, pay 0.
 
 3. **Exact canonical tier:** substring matching removed (the "NOT HIGH" → HIGH bug). AI must return JSON `{tier, reasoning}`; only exact HIGH/MEDIUM/LOW/UNVERIFIABLE accepted.
 
@@ -146,7 +146,7 @@ All scenarios executed on GenLayer Testnet Bradbury with live AI validators (tx 
 
 1. Open https://studio.genlayer.com and deploy `contract.py`.
 2. `create_job(worker, role, rubric, rate, appeal_window_sec, max_hours_per_period, stale_window_sec)` with GEN value.
-3. `submit_period(job_id, hours, items_json)` where items is a JSON array of `{desc, url, impact}`.
+3. `submit_period(job_id, hours, items_json)` where items is a JSON array of `{desc, url, impact}` and `url` is `https://ipfs.io/ipfs/<CID>`.
 4. `resolve_period(period_id)` → AI audits and returns tier with on-chain reasoning.
 5. `finalize(period_id)` after appeal window → worker paid.
 6. Try recovery attempts, mutated evidence, injections, stale periods.

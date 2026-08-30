@@ -12,6 +12,8 @@ MAX_FETCH_FAILURES = 3
 MAX_ITEMS = 3
 MAX_URL_LEN = 500
 MAX_TEXT_LEN = 200
+IPFS_GATEWAY_PREFIX = "https://ipfs.io/ipfs/"
+_CID_RE = _re.compile(r"^(Qm[1-9A-HJ-NP-Za-km-z]{44}|b[a-z2-7]{20,})$")
 
 def _clean_text(body: bytes) -> str:
     raw = body.decode("utf-8", errors="ignore")
@@ -23,6 +25,12 @@ def _sanitize(s: str, limit: int) -> str:
     s = s.replace("<", " ").replace(">", " ")
     s = _re.sub(r"\s+", " ", s).strip()
     return s[:limit]
+
+def _is_content_addressed_url(url: str) -> bool:
+    """Accept only canonical immutable IPFS gateway URLs for sealed evidence."""
+    if not url.startswith(IPFS_GATEWAY_PREFIX):
+        return False
+    return _CID_RE.fullmatch(url[len(IPFS_GATEWAY_PREFIX):]) is not None
 
 def _fetch_evidence(items):
     parts_hash = []
@@ -111,6 +119,7 @@ class FairPay(gl.Contract):
             it["impact"] = _sanitize(str(it.get("impact", "")), MAX_TEXT_LEN)
             it["url"] = str(it.get("url", ""))[:MAX_URL_LEN]
             assert len(it["url"]) > 0 and len(it["desc"]) > 0, "Each item needs desc and url"
+            assert _is_content_addressed_url(it["url"]), "Evidence URL must be a canonical IPFS CID URL"
         need = (hours * job["rate"] * 125 * 10**18) // 100
         assert job["budget"] >= need, "Budget must cover claimed hours at max multiplier"
 

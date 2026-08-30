@@ -47,7 +47,7 @@ _install_genlayer_stub()
 contracts_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "contracts")
 sys.path.insert(0, contracts_dir)
 
-from contract import _sanitize, _clean_text
+from contract import _sanitize, _clean_text, _is_content_addressed_url
 
 
 def test_sanitize_strips_angle_brackets():
@@ -63,3 +63,10 @@ def test_clean_text_removes_tags_and_scripts():
     html = b"<html><script>evil()</script><body><p>Hello   World</p></body></html>"
     t = _clean_text(html)
     assert "evil" not in t and "<" not in t and "Hello World" in t
+
+
+def test_content_addressed_url_requires_canonical_ipfs_cid():
+    cid = "Qm" + "a" * 44
+    assert _is_content_addressed_url("https://ipfs.io/ipfs/" + cid)
+    assert not _is_content_addressed_url("https://example.com/proof")
+    assert not _is_content_addressed_url("https://ipfs.io/ipfs/" + cid + "?download=1")
