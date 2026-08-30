@@ -42,7 +42,11 @@ def _install_genlayer_stub():
 
 
 _install_genlayer_stub()
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# Add contracts/ to sys.path so we can import contract.py
+contracts_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "contracts")
+sys.path.insert(0, contracts_dir)
+
 from contract import _sanitize, _clean_text
 
 
