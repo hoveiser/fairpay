@@ -79,6 +79,47 @@ A decentralized payroll system where workers submit evidence of their work, AI v
 - 404 evidence → ❌ "Evidence not fetchable at submission time"
 - [tx](https://explorer-studio.genlayer.com/tx/0xfec8fb59008881cf144442a07c2f36ba36824e9a1c0e3063e9ca0cd34973757b)
 
+## 🧪 Testing Strategy
+
+Three-layer testing approach per GenLayer documentation recommendations:
+
+### 1. Unit Tests (`tests/test_guards.py`)
+Pure helper function tests — no SDK installation required:
+- `_sanitize()` strips `<data>` tags and enforces length limits
+- `_clean_text()` removes HTML tags and script content
+- Input validation and truncation logic
+
+**Run:** `pytest tests/test_guards.py -v`
+
+### 2. Direct Mode Tests (`tests/test_regression.py`)
+In-memory contract logic with mocked `gl.nondet.web.get()` and `gl.nondet.exec_prompt()`:
+- **Budget guard:** submit 12h vs budget 8 → rejected
+- **Hours cap:** submit 50h vs cap 40 → rejected  
+- **Dead URL:** 404 evidence → rejected at submission
+- **Evidence mutation:** page mutated after submit → MISMATCH, pay 0
+- **Injection neutralization:** "IGNORE ALL PREVIOUS INSTRUCTIONS" in rubric → AI returns LOW
+- **Substring tier rejection:** `{"tier": "NOT HIGH"}` → retry path
+- **Happy path:** HIGH/MEDIUM/LOW tiers → correct payout
+- **Reserved recovery:** recover excess budget, finalize stays funded
+- **Stale dismissal:** submitted period never resolved → dismiss after window
+
+**SDK Version:** Pinned to `v0.2.16` (GenLayer stable release per team recommendation)
+
+**Run:** `pytest tests/test_regression.py -v`
+
+### 3. On-Chain Integration
+All scenarios executed on GenLayer Testnet Bradbury with live AI validators (tx hashes in Test Matrix above). This provides stronger coverage than Studio Mode localnet testing, so Studio Mode tests are intentionally not duplicated in CI.
+
+**CI Status:** ✅ 12/12 passing in GitHub Actions — see [workflow runs](https://github.com/hoveiser/fairpay/actions)
+
+## 📂 Files
+
+- `contracts/contract.py` — FairPay source (v0.3.0)
+- `tests/test_guards.py` — Unit tests for helper functions
+- `tests/test_regression.py` — Direct Mode regression tests
+- `.github/workflows/regression.yml` — CI configuration
+- `README.md` — this documentation
+
 ## ⚠️ Threat Model
 
 ### Closed
