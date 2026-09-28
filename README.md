@@ -6,15 +6,20 @@ A decentralized payroll system where workers submit evidence of their work, AI v
 
 ## 📋 Contract Details
 
-- **Network:** GenLayer StudioNet (`studio.genlayer.com`, chain id 61999 - gasless)
+- **Network:** GenLayer StudioNet (`studio.genlayer.com`, chain id 61999, gasless)
 - **Current Version:** v0.4.0
-- **Deployed Address (v0.3.0 reference):** `0xf1C916eCeA8a26563D8DAfff99Fa15C4f46Bf523`
-- **Explorer:** [View on GenLayer Studio Explorer](https://explorer-studio.genlayer.com/address/0xf1C916eCeA8a26563D8DAfff99Fa15C4f46Bf523)
+- **Deployed Address (v0.4.0, LIVE):** `0x89D31CB0CEe1465023782D7F89d9244f8Fc830CF`
+  - Deploy tx (FINALIZED): [`0x92e205ec02b43a090911f3069e49117182b0e8016947689b5d7166c8b9fb2c55`](https://explorer-studio.genlayer.com/tx/0x92e205ec02b43a090911f3069e49117182b0e8016947689b5d7166c8b9fb2c55)
+  - Source on the explorer matches `contracts/contract.py` byte for byte (19002 bytes, first line `# v0.4.0`); raw proof in `evidence/deploy.json` and `evidence/stored_source.bin`.
+- **v0.4.0 Explorer:** [address page](https://explorer-studio.genlayer.com/address/0x89D31CB0CEe1465023782D7F89d9244f8Fc830CF)
+- **Reference Address (v0.3.0, historical):** `0xf1C916eCeA8a26563D8DAfff99Fa15C4f46Bf523` ([v0.3.0 txs used in the reference matrix below](https://explorer-studio.genlayer.com/address/0xf1C916eCeA8a26563D8DAfff99Fa15C4f46Bf523))
 - **Source:** https://github.com/hoveiser/fairpay
 
-> **Network correction:** earlier README copy labelled this deployment "Testnet Bradbury (LIVE)". That was wrong: the address above lives on **StudioNet** (`explorer-studio.genlayer.com`) - verified against the explorer JSON API (`type: CONTRACT`, 30 txs, 26 GEN). All explorer links in this file are StudioNet links.
+> **Network correction:** earlier README copy labelled the v0.3.0 deployment "Testnet Bradbury (LIVE)". That was wrong: that address lives on **StudioNet** (`explorer-studio.genlayer.com`). All explorer links in this file are StudioNet links.
 >
-> **v0.4.0 deployment status:** the fixed v0.4.0 contract has **not** been redeployed yet - deployment from this environment is blocked because the signing account's keystore is locked and no `GENLAYER_PRIVATE_KEY` is present (see *Deployment* below). Until it is redeployed, the address above still runs the v0.3.0 logic. All v0.4.0 behavior below is verified by Direct Mode tests (46 passing).
+> **v0.4.0 deployment status (DONE):** v0.4.0 is now deployed and live on StudioNet at `0x89D31CB0CEe1465023782D7F89d9244f8Fc830CF`, deployed through `genlayer-py` with the signing key from the gitignored `.env` (the CLI keystore is locked in this environment). The deploy transaction is FINALIZED and its stored source byte-matches `contracts/contract.py`.
+>
+> **On-chain steward scenario status (PARTIAL, blocked by an external gateway):** `create_job` is proven live on StudioNet (it locks real GEN, see `evidence/verification.json`). The full steward appeal/recovery payout could not be executed end to end because the contract's only accepted evidence gateway, `https://ipfs.io/ipfs/`, now returns HTTP 429/403 (a "service-worker gateway only" Cloudflare interstitial) to non-browser fetchers, including the on-chain validators. Every `submit_period` therefore fails its evidence fetch and reverts with "Evidence not fetchable at submission time"; the sealed `strict_eq` value on those reverted transactions is literally `FETCH_FAILED` (raw explorer records under `evidence/txs/` and `evidence/verify/`, verified across 4 independent attempts by `scripts/verify_transactions.py`). This is a gateway availability change, not a defect in the v0.4.0 reserved-liability logic, which remains proven by 46 passing Direct Mode tests and the green CI run.
 
 ## 📝 Changes from v0.3.0 to v0.4.0
 
@@ -78,7 +83,7 @@ Regression coverage: `tests/test_reserved_appeal.py` (the steward's exact LOW/ME
 
 ## 🧪 Test Matrix (reference txs recorded on the v0.3.0 StudioNet deployment)
 
-> These on-chain hashes are from the **v0.3.0** reference run on StudioNet. The v0.4.0 reserved-liability/appeal path is covered by Direct Mode today; a v0.4.0 on-chain re-run (steward scenario: LOW → recover attempt → appeal → HIGH → finalize) is pending the redeploy noted under *Deployment*.
+> These on-chain hashes are from the **v0.3.0** reference run on StudioNet. The v0.4.0 reserved-liability/appeal path is proven by Direct Mode (46 tests, green CI). v0.4.0 is now deployed on StudioNet, but a v0.4.0 on-chain steward re-run could not be executed because `ipfs.io` no longer serves the evidence to non-browser fetchers (see *Deployment* and `evidence/`).
 
 ### Test A: Budget Guard
 - submit 12h vs budget 8 → ❌ "Budget must cover claimed hours at max multiplier"
@@ -137,22 +142,27 @@ In-memory contract logic against the real Direct Mode runner, with mocked `gl.no
 **Run:** `bash scripts/setup_direct_test_cache.sh contracts/contract.py && pytest tests/ -v`
 
 ### 3. On-Chain Integration
-Scenarios executed on **GenLayer StudioNet** with live AI validators (reference tx hashes in the Test Matrix above; those hashes are from the v0.3.0 deployment). The v0.4.0 on-chain re-run of the steward scenario is tracked under *Deployment*.
+Reference tx hashes in the Test Matrix above are from the **v0.3.0** StudioNet deployment. v0.4.0 is now live on StudioNet (`0x89D31CB0CEe1465023782D7F89d9244f8Fc830CF`): `create_job` is proven on-chain (it locks GEN), but the full steward appeal/recovery payout could not be run because `ipfs.io`, the only evidence gateway the contract accepts, now returns HTTP 429/403 to non-browser fetchers so `submit_period` fails its on-chain evidence fetch (see *Deployment* and `evidence/`).
 
 **CI Status:** ✅ 46/46 (9 unit + 37 Direct Mode) passing in GitHub Actions via `pytest tests/` - see [workflow runs](https://github.com/hoveiser/fairpay/actions)
 
 ## 🚀 Deployment
 
-StudioNet is gasless; the deployer account's keystore must be unlocked (or `GENLAYER_PRIVATE_KEY` supplied) to sign. **From this environment the deploy is blocked** - the active `genlayer` account `escrow-builder` (`0x3de43aa2f7162c80af98abe78222ae0cdf83c506`) is `locked` and no `GENLAYER_PRIVATE_KEY` is present, so the fixed v0.4.0 contract has not been pushed on-chain yet. To complete it:
+v0.4.0 is deployed on StudioNet through `genlayer-py` (the CLI keystore is locked in this environment, so the SDK signs with the key in the gitignored `.env`). The deployer account is `0x3de43AA2f7162c80af98abe78222aE0Cdf83c506`; the key is never printed, logged, or committed.
+
+- Contract: `0x89D31CB0CEe1465023782D7F89d9244f8Fc830CF`
+- Deploy tx (FINALIZED): `0x92e205ec02b43a090911f3069e49117182b0e8016947689b5d7166c8b9fb2c55`
+- Stored source byte-matches `contracts/contract.py` (19002 bytes). Reproduce: `./scripts/deploy_studionet.py`, then `./scripts/verify_transactions.py`.
+
+What is and is not proven on chain:
+- `create_job` ran live and locked 10 GEN (FINALIZED, execution SUCCESS): `0x0f5e26f71d2a186f04dce60677fb56de95642b689790b91fabd3f319daff5306`.
+- The `submit_period`/`resolve_period`/`recover_budget`/`appeal`/`finalize` steward path could not be executed on chain today: `ipfs.io` (the contract's mandated, immutable evidence gateway) serves an HTTP 429/403 "service-worker gateway only" interstitial to non-browser clients, including the validators, so the evidence fetch returns `FETCH_FAILED` and `submit_period` reverts. This was confirmed on chain across 4 independent attempts (raw explorer records in `evidence/`). It is a gateway availability change, not a v0.4.0 logic defect.
 
 ```bash
-# 1. unlock the signer (writes nothing to the repo)
-genlayer account unlock            # or import an unlocked key
-# 2. deploy the fixed contract to StudioNet
-genlayer network set studionet
-genlayer deploy --contract contracts/contract.py
-# 3. value-bearing calls (create_job/top_up) via genlayer-py using GENLAYER_PRIVATE_KEY
-#    loaded from a gitignored .env; the key is never printed or committed.
+# deploy v0.4.0 to StudioNet with the key from .env (never printed)
+./.venv/bin/python scripts/deploy_studionet.py
+# verify every StudioNet tx (status, method, execution result) via the explorer JSON API
+./.venv/bin/python scripts/verify_transactions.py
 ```
 
 ## 📂 Files
@@ -164,6 +174,11 @@ genlayer deploy --contract contracts/contract.py
 - `tests/test_reserved_appeal.py` - PART A reserved-liability / appeal regression
 - `tests/test_adversarial.py` - PART B adversarial audit suite
 - `.github/workflows/regression.yml` - CI configuration
+- `scripts/setup_direct_test_cache.sh` - seeds the Direct Mode runner cache so CI is not cache-dependent
+- `scripts/deploy_studionet.py` - deploys v0.4.0 to StudioNet via genlayer-py, resolves the address, byte-matches the source
+- `scripts/run_steward_scenario.py` - live StudioNet steward scenario runner (invariants, balances, reserved_liability)
+- `scripts/verify_transactions.py` - verifies each StudioNet tx against the explorer JSON API
+- `evidence/` - raw deploy/scenario/verification records (never paraphrased)
 - `index.html` - static project landing page (v0.4.0); not part of the contract or CI
 - `README.md` - this documentation
 

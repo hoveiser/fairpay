@@ -1,0 +1,10 @@
+{
+  "network": "studionet (chain id 61999, studio.genlayer.com, gasless)",
+  "contract_address": "0x89D31CB0CEe1465023782D7F89d9244f8Fc830CF",
+  "deploy_txid": "0x92e205ec02b43a090911f3069e49117182b0e8016947689b5d7166c8b9fb2c55",
+  "deploy_status": "FINALIZED",
+  "employer": "0x3de43AA2f7162c80af98abe78222aE0Cdf83c506",
+  "source_byte_match_vs_repo": true,
+  "explorer_tx_link": "https://explorer-studio.genlayer.com/tx/0x92e205ec02b43a090911f3069e49117182b0e8016947689b5d7166c8b9fb2c55",
+  "explorer_address_link": "https://explorer-studio.genlayer.com/address/0x89D31CB0CEe1465023782D7F89d9244f8Fc830CF"
+}
