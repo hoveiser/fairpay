@@ -1,4 +1,4 @@
-# PART B — adversarial audit tests. Assume BOTH employer and worker may be
+# PART B - adversarial audit tests. Assume BOTH employer and worker may be
 # fraudulent. Each test encodes a verdict: either a REAL gap that v0.4.0 now
 # closes (rejection / containment assertions) or an already-safe property that
 # is pinned so it cannot silently regress.
@@ -214,7 +214,7 @@ def test_odd_amount_end_to_end_integer_math(direct_vm, fp, direct_alice, direct_
 # ---- Item 5: availability policy --------------------------------------------
 # VERDICT: policy decided + implemented. 3 failed fetches now mark the period
 # "unresolvable", release its reservation, and free the job slot for worker
-# resubmission — it does NOT force the worker's pay to 0. A transient gateway /
+# resubmission - it does NOT force the worker's pay to 0. A transient gateway /
 # AI outage must not destroy the worker's claim.
 def test_unresolvable_releases_reservation_and_frees_slot(direct_vm, fp, direct_alice, direct_bob):
     c = _fresh(fp, direct_vm, direct_alice, direct_bob)

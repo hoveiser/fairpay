@@ -1,4 +1,4 @@
-# FairPay v0.4.0 regression harness — GenLayer Direct Mode (gltest VMContext).
+# FairPay v0.4.0 regression harness - GenLayer Direct Mode (gltest VMContext).
 # Rewritten to the actually-installed direct-mode API: the contract runs inside
 # the pinned GenVM runner; mocks go through direct_vm.mock_web/mock_llm; sender/
 # value/time through the shared controller. See conftest.py for the harness.

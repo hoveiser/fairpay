@@ -1,4 +1,4 @@
-# PART C.2 — on-chain run of the steward scenario: STATUS = BLOCKED
+# PART C.2 - on-chain run of the steward scenario: STATUS = BLOCKED
 
 The steward scenario (LOW -> recover attempt -> appeal -> HIGH -> finalize
 succeeds) is fully covered in Direct Mode against the real pinned GenVM runner
@@ -19,7 +19,7 @@ the **redeployed v0.4.0** contract could NOT be executed from this environment.
 No transaction hashes are fabricated. Once the v0.4.0 contract is deployed, the
 following will be recorded here (and in the README) and verified through the
 explorer JSON API `https://explorer-studio.genlayer.com/api/transactions/<hash>`
-with a real User-Agent — checking `status` AND the receipt execution result, and
+with a real User-Agent - checking `status` AND the receipt execution result, and
 comparing recipient balances before/after any payout:
 
 1. create_job (payable) -> job id

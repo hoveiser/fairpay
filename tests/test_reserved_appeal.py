@@ -1,4 +1,4 @@
-# PART A — reserved-liability must cover every payout that is still reachable.
+# PART A - reserved-liability must cover every payout that is still reachable.
 # These are the appeal/recovery regression tests the steward found missing.
 import pytest
 

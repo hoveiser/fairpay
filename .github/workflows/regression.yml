@@ -11,6 +11,12 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install
-        run: pip install pytest genlayer-test
+        run: pip install pytest genlayer-test genvm-linter
+      - name: Seed Direct Mode runner cache
+        # gltest downloads the unversioned genvm-universal.tar.xz asset, which
+        # recent releases renamed to genvm-runners-all.tar.xz (404 on a clean
+        # runner). Seed gltest's cache from genvm-lint's correctly-fetched
+        # bundle so Direct Mode tests run without a cache-dependent shortcut.
+        run: bash scripts/setup_direct_test_cache.sh contracts/contract.py
       - name: Run regression harness
         run: pytest tests/ -v
