@@ -1,0 +1,90 @@
+contract: 0xb16d9670A39e9eF22641312c1bFDE5E4e9673AF4
+employer: 0x3de43AA2f7162c80af98abe78222aE0Cdf83c506 balance: 93000000000000000000
+worker  : 0x13F97bdC5a507B60130EafA245c15f6BA40b91CB balance: 0
+
+[1] create_job (payable, employer, 10 GEN)
+  01_create_job    create_job       tx=0x0c65da680d72b37b9bb14e94822b896bc70052a1e0174413785429bac2c322e0 status=FINALIZED exec=SUCCESS ok=True value=10gen
+    resolved job id: 3
+
+[2] submit_period gateway probe (weak evidence, worker)
+  02_submit_dweb   submit_period    tx=0xf29519efe8222f645137b25ff59f9d7eecf90b6286a1e22611ce437f16f354f8 status=FINALIZED exec=ERROR ok=False value=0gen
+    !! exec=ERROR result=AmV4aXRfY29kZSAx
+    dweb.link: not fetchable by validators on chain (reverted), trying next
+  02_submit_w3s    submit_period    tx=0x8b662d23bf99643fb908c3d6b047aa704959b47d57f7a5da1811a57c022ace78 status=FINALIZED exec=ERROR ok=False value=0gen
+    !! exec=ERROR result=AmV4aXRfY29kZSAx
+    w3s.link: not fetchable by validators on chain (reverted), trying next
+  02_submit_ipfs   submit_period    tx=0x0eb05b02e4b9d15dd35459c59ad1c642921f8ca4fdd047645bfb59fc8c8ef9b9 status=FINALIZED exec=ERROR ok=False value=0gen
+    !! exec=ERROR result=AmV4aXRfY29kZSAx
+    ipfs.io: not fetchable by validators on chain (reverted), trying next
+  02_submit_gateway submit_period    tx=0x08e43568eee6d9a96186b5755f647b1a7a6e8c666a2f69f9a6c4cd47382abc9b status=FINALIZED exec=SUCCESS ok=True value=0gen
+    ==> validators reached gateway.pinata.cloud; period sealed (pid=2)
+
+[3] resolve_period (first audit)
+  03_resolve_first resolve_period   tx=0xe381c0a14f2af09e108c5cccab8d6695910405a5a2d19ee5f51e0e26cdf0118a status=FINALIZED exec=SUCCESS ok=True value=0gen
+    first tier: LOW status: adjudicated pay: 3 gen
+
+[4] reserved_liability BEFORE recovery
+    reserved_before=5gen budget=10gen
+
+[5] recover_budget (employer, inside the open appeal window)
+  05_recover_budget recover_budget   tx=0x58d4b1db8a335040f096ab0f8196375a1f4ea0c948bb6fd48021304f8f9583bb status=FINALIZED exec=SUCCESS ok=True value=0gen
+    budget_after=5gen reserved_after=5gen max_reachable=5gen employer_balance 83->88gen
+    INVARIANT budget >= reserved_after >= max_reachable(5gen): True
+
+[6] appeal (worker, within window)
+  06_appeal        appeal           tx=0x50d115bd42a31f6a0115cd92963a945d3a276781f78778ad9ddba218a3d135e9 status=FINALIZED exec=SUCCESS ok=True value=0gen
+    period status after appeal: disputed appeal_succeeded: True
+
+[7] resolve_period (final appeal round)
+  07_resolve_final resolve_period   tx=0x48e458ca67c36af65d5dd6ed632cc5cbdcd10d225e547e1bc3b243d3abd52aba status=FINALIZED exec=SUCCESS ok=True value=0gen
+    final tier: LOW pay: 3 gen status: adjudicated
+
+[8] finalize (must be funded; no 'Job budget insufficient')
+  08_finalize      finalize         tx=0x1297845d873a41b308b95e5c3ed2329dcdb935bbc11e1a367c40b0061cf8111c status=FINALIZED exec=SUCCESS ok=True value=0gen
+    worker balance 0->3gen delta=3gen (pay=3gen match=True) period_status=paid budget_remaining=2gen
+
+=== SUMMARY ===
+{
+  "scenario_gateway": "gateway.pinata.cloud",
+  "gateway_probe": {
+    "dweb.link": {
+      "url": "https://dweb.link/ipfs/bafkreidwkl2tdyhpeij4es7ng23qiexzxn5nq2ae2ckf6nmtsahrsit5zq",
+      "tx": "0xf29519efe8222f645137b25ff59f9d7eecf90b6286a1e22611ce437f16f354f8",
+      "finalized": "FINALIZED",
+      "exec": "ERROR",
+      "sealed_output": "AmV4aXRfY29kZSAx"
+    },
+    "w3s.link": {
+      "url": "https://w3s.link/ipfs/bafkreidwkl2tdyhpeij4es7ng23qiexzxn5nq2ae2ckf6nmtsahrsit5zq",
+      "tx": "0x8b662d23bf99643fb908c3d6b047aa704959b47d57f7a5da1811a57c022ace78",
+      "finalized": "FINALIZED",
+      "exec": "ERROR",
+      "sealed_output": "AmV4aXRfY29kZSAx"
+    },
+    "ipfs.io": {
+      "url": "https://ipfs.io/ipfs/bafkreidwkl2tdyhpeij4es7ng23qiexzxn5nq2ae2ckf6nmtsahrsit5zq",
+      "tx": "0x0eb05b02e4b9d15dd35459c59ad1c642921f8ca4fdd047645bfb59fc8c8ef9b9",
+      "finalized": "FINALIZED",
+      "exec": "ERROR",
+      "sealed_output": "AmV4aXRfY29kZSAx"
+    },
+    "gateway.pinata.cloud": {
+      "url": "https://gateway.pinata.cloud/ipfs/bafkreidwkl2tdyhpeij4es7ng23qiexzxn5nq2ae2ckf6nmtsahrsit5zq",
+      "tx": "0x08e43568eee6d9a96186b5755f647b1a7a6e8c666a2f69f9a6c4cd47382abc9b",
+      "finalized": "FINALIZED",
+      "exec": "SUCCESS",
+      "sealed_output": "ABE="
+    }
+  },
+  "first_tier": "LOW",
+  "final_tier": "LOW",
+  "reserved_before_recovery": 5000000000000000000,
+  "reserved_after_recovery": 5000000000000000000,
+  "budget_after_recovery": 5000000000000000000,
+  "max_reachable_payout": 5000000000000000000,
+  "invariant_budget_ge_reserved_after_recovery": true,
+  "appeal_succeeded": true,
+  "finalize_succeeded": true,
+  "worker_payout_delta": 3000000000000000000,
+  "payout_matches_balance": true
+}

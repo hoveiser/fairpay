@@ -2837,6 +2837,5 @@
   "appeal_validators_timeout": false,
   "timestamp_awaiting_finalization": 1790591408,
   "blocked_at": null,
-  "worker_id": null,
-  "triggered_count": 0
+  "worker_id": null
 }

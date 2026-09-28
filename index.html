@@ -28,18 +28,18 @@ a.verify { color:#00FF66; }
 </head>
 <body>
 <div class="container">
-<h1>💰 FairPay <span class="version-badge">v0.4.0</span></h1>
+<h1>💰 FairPay <span class="version-badge">v0.4.1</span></h1>
 <p class="subtitle">AI-Audited Payroll with Reserved-Liability Recovery &amp; Sealed Evidence on GenLayer</p>
 
 <div class="card">
 <h2>📋 Contract Details</h2>
 <p><strong>Network:</strong> GenLayer StudioNet (studio.genlayer.com, chain id 61999, gasless)</p>
-<p><strong>Contract Address (v0.4.0, LIVE):</strong></p>
-<div class="contract-address">0x89D31CB0CEe1465023782D7F89d9244f8Fc830CF</div>
-<p style="font-size:0.85rem;opacity:0.85;">Deployed via genlayer-py; deploy tx <code>0x92e205ec02b43a090911f3069e49117182b0e8016947689b5d7166c8b9fb2c55</code> is FINALIZED and the stored source byte-matches the repo. v0.3.0 reference address: <code>0xf1C916eCeA8a26563D8DAfff99Fa15C4f46Bf523</code>. The full on-chain steward payout is currently blocked because ipfs.io (the contract's only evidence gateway) returns HTTP 429/403 to non-browser fetchers; the reserved-liability fix is proven by 46 Direct Mode tests and green CI.</p>
+<p><strong>Contract Address (v0.4.1, LIVE):</strong></p>
+<div class="contract-address">0xb16d9670A39e9eF22641312c1bFDE5E4e9673AF4</div>
+<p style="font-size:0.85rem;opacity:0.85;">Deployed via genlayer-py; deploy tx <code>0x3fa27a52f1e5faf3dce7f3bbc18038bfbd45700598dc4d3fb140d23d10c3dd4b</code> is FINALIZED and the stored source byte-matches the repo (20745 bytes). v0.4.1 replaces the single <code>ipfs.io</code> evidence prefix with a strict allowlist of four HTTPS IPFS gateways, so validators can seal evidence even when one gateway rate-limits them. The full on-chain steward run is now COMPLETE: <code>submit_period</code> sealed on <code>gateway.pinata.cloud</code>, the audit returned LOW, recovery inside the open appeal window left the reserve funded, the appeal was accepted, and <code>finalize</code> paid the worker 3 GEN. Proven by 79 passing tests, green CI, and 11/11 explorer-verified transactions. Historical: v0.4.0 <code>0x89D31CB0CEe1465023782D7F89d9244f8Fc830CF</code>, v0.3.0 reference <code>0xf1C916eCeA8a26563D8DAfff99Fa15C4f46Bf523</code>.</p>
 <a href="https://studio.genlayer.com" class="btn" target="_blank">Open in GenLayer Studio →</a>
 <a href="https://github.com/hoveiser/fairpay" class="btn" target="_blank">View Source Code →</a>
-<a href="https://explorer-studio.genlayer.com/address/0x89D31CB0CEe1465023782D7F89d9244f8Fc830CF" class="btn" target="_blank">View on Explorer →</a>
+<a href="https://explorer-studio.genlayer.com/address/0xb16d9670A39e9eF22641312c1bFDE5E4e9673AF4" class="btn" target="_blank">View on Explorer →</a>
 </div>
 
 <div class="card">
@@ -50,8 +50,8 @@ a.verify { color:#00FF66; }
 <p>Employer can only withdraw budget <em>above</em> the reserved liability - a period reserves its <strong>maximum reachable payout</strong> (hours × rate × 1.25, rounded up) while any higher outcome is still live (submitted / disputed / adjudicated-with-appeal-open), dropping to exact <code>pay</code> only once truly final. The recovery and appeal paths share one window predicate, so <code>finalize()</code> always stays funded.</p>
 </div>
 <div class="feature">
-<h3>🔏 Sealed Evidence (v0.3.0):</h3>
-<p>Evidence is sha256-sealed at submission; mutated evidence at audit time → <code>MISMATCH</code>, pay 0.</p>
+<h3>🔏 Sealed Evidence (v0.3.0, multi-gateway in v0.4.1):</h3>
+<p>Evidence is sha256-sealed at submission; mutated evidence at audit time -> <code>MISMATCH</code>, pay 0. v0.4.1 accepts the canonical CID URL from a strict allowlist of four HTTPS IPFS gateways (<code>gateway.pinata.cloud</code>, <code>ipfs.io</code>, <code>dweb.link</code>, <code>w3s.link</code>); integrity stays content-derived, so which gateway served the bytes does not matter.</p>
 </div>
 <div class="feature">
 <h3>🧠 Exact Canonical Tiers + On-Chain Reasoning (v0.3.0):</h3>
@@ -63,4 +63,26 @@ a.verify { color:#00FF66; }
 <h2>🧪 Test Results (v0.3.0 reference contract)</h2>
 <div class="test-case"><h3>A: Budget Guard</h3><p>12h vs 8 GEN → ❌ rejected</p><p><a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x5914a4d03691c3fd81cd69b9f0c309c16dd98e5b74d48a678f557ecea39356f3">verify →</a></p></div>
 <div class="test-case"><h3>B: Hours Cap</h3><p>50h vs cap 40 → ❌ rejected</p><p><a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x88e25fdce3aa81a161310242de21e9da42919869c9cb53650eb2c65e0326283b">verify →</a></p></div>
-<div class="test-case"><h3>C: Happy Path</h3><p>MEDIUM → <span class="status-paid">PAID 4 GEN</span></p><p><a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/
+<div class="test-case"><h3>C: Happy Path</h3><p>MEDIUM -> <span class="status-paid">PAID 4 GEN</span></p><p><a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x132cc26b9134493999cb6d68f508fc0870ea131ace71af2ce1e2e26176db67dd">verify -></a></p></div>
+</div>
+
+<div class="card">
+<h2>🚀 v0.4.1 On-Chain Steward Run (StudioNet, complete)</h2>
+<p>Contract <code>0xb16d9670A39e9eF22641312c1bFDE5E4e9673AF4</code> | deploy tx FINALIZED | stored source byte-matches the repo. The gateway probe on chain found <code>gateway.pinata.cloud</code> fetchable by the validators while <code>dweb.link</code>, <code>w3s.link</code> and <code>ipfs.io</code> returned FETCH_FAILED.</p>
+<div class="test-case"><h3>Reserved liability across recovery + appeal</h3><p>4h × 1 GEN, budget 10 GEN. First audit <strong>LOW</strong>; reserve held at the 5 GEN max reachable while the appeal window stayed open; <code>recover_budget</code> withdrew only the excess (budget 10 -> 5, employer +5 GEN); appeal accepted; final LOW; <code>finalize</code> funded, worker paid <span class="status-paid">3 GEN</span> (balance delta matched the payout exactly).</p></div>
+<p>Reproduce with <code>scripts/run_steward_scenario.py</code>; re-verify every hash with <code>scripts/verify_transactions.py</code>; raw records in <code>evidence/</code>.</p>
+</div>
+
+<div class="card">
+<h2>⚠️ Threat Model (summary)</h2>
+<ul>
+<li>Gateway lookalikes (<code>ipfs.io.evil.com</code>, <code>ipfs.io@evil.com</code>, other scheme/port, query, fragment, traversal, subdomain form) are rejected before any state change by an anchored allowlist regex.</li>
+<li>Same-CID different-bytes across gateways are caught by the sealed-hash re-check at audit time.</li>
+<li>Reserved liability always covers the maximum still-reachable payout, so recovery can never defund a live appeal.</li>
+</ul>
+</div>
+
+<p class="subtitle" style="margin-top:2rem;">License: MIT | Source: github.com/hoveiser/fairpay</p>
+</div>
+</body>
+</html>

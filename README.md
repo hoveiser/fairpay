@@ -1,4 +1,4 @@
-# 💰 FairPay - v0.4.0
+# 💰 FairPay - v0.4.1
 
 **AI-audited payroll with quality-tiered payouts, reserved-liability recovery, and sealed evidence on GenLayer**
 
@@ -7,19 +7,35 @@ A decentralized payroll system where workers submit evidence of their work, AI v
 ## 📋 Contract Details
 
 - **Network:** GenLayer StudioNet (`studio.genlayer.com`, chain id 61999, gasless)
-- **Current Version:** v0.4.0
-- **Deployed Address (v0.4.0, LIVE):** `0x89D31CB0CEe1465023782D7F89d9244f8Fc830CF`
-  - Deploy tx (FINALIZED): [`0x92e205ec02b43a090911f3069e49117182b0e8016947689b5d7166c8b9fb2c55`](https://explorer-studio.genlayer.com/tx/0x92e205ec02b43a090911f3069e49117182b0e8016947689b5d7166c8b9fb2c55)
-  - Source on the explorer matches `contracts/contract.py` byte for byte (19002 bytes, first line `# v0.4.0`); raw proof in `evidence/deploy.json` and `evidence/stored_source.bin`.
-- **v0.4.0 Explorer:** [address page](https://explorer-studio.genlayer.com/address/0x89D31CB0CEe1465023782D7F89d9244f8Fc830CF)
-- **Reference Address (v0.3.0, historical):** `0xf1C916eCeA8a26563D8DAfff99Fa15C4f46Bf523` ([v0.3.0 txs used in the reference matrix below](https://explorer-studio.genlayer.com/address/0xf1C916eCeA8a26563D8DAfff99Fa15C4f46Bf523))
+- **Current Version:** v0.4.1
+- **Deployed Address (v0.4.1, LIVE):** `0xb16d9670A39e9eF22641312c1bFDE5E4e9673AF4`
+  - Deploy tx (FINALIZED): [`0x3fa27a52f1e5faf3dce7f3bbc18038bfbd45700598dc4d3fb140d23d10c3dd4b`](https://explorer-studio.genlayer.com/tx/0x3fa27a52f1e5faf3dce7f3bbc18038bfbd45700598dc4d3fb140d23d10c3dd4b)
+  - Source on the explorer matches `contracts/contract.py` byte for byte (20745 bytes, first line `# v0.4.1`); raw proof in `evidence/deploy.json` and `evidence/stored_source.bin`.
+  - **v0.4.1 Explorer:** [address page](https://explorer-studio.genlayer.com/address/0xb16d9670A39e9eF22641312c1bFDE5E4e9673AF4)
+- **Historical Address (v0.4.0):** `0x89D31CB0CEe1465023782D7F89d9244f8Fc830CF` ([v0.4.0 txs](https://explorer-studio.genlayer.com/address/0x89D31CB0CEe1465023782D7F89d9244f8Fc830CF)) - superseded by v0.4.1; the single-gateway `ipfs.io` evidence path became unreachable by validators (HTTP 429), see *Changes from v0.4.0 to v0.4.1*.
+- **Historical Address (v0.3.0):** `0xf1C916eCeA8a26563D8DAfff99Fa15C4f46Bf523` ([v0.3.0 txs used in the reference matrix below](https://explorer-studio.genlayer.com/address/0xf1C916eCeA8a26563D8DAfff99Fa15C4f46Bf523))
 - **Source:** https://github.com/hoveiser/fairpay
 
 > **Network correction:** earlier README copy labelled the v0.3.0 deployment "Testnet Bradbury (LIVE)". That was wrong: that address lives on **StudioNet** (`explorer-studio.genlayer.com`). All explorer links in this file are StudioNet links.
 >
-> **v0.4.0 deployment status (DONE):** v0.4.0 is now deployed and live on StudioNet at `0x89D31CB0CEe1465023782D7F89d9244f8Fc830CF`, deployed through `genlayer-py` with the signing key from the gitignored `.env` (the CLI keystore is locked in this environment). The deploy transaction is FINALIZED and its stored source byte-matches `contracts/contract.py`.
+> **v0.4.1 deployment status (DONE):** v0.4.1 is deployed and live on StudioNet at `0xb16d9670A39e9eF22641312c1bFDE5E4e9673AF4`, deployed through `genlayer-py` with the signing key from the gitignored `.env` (the CLI keystore is locked in this environment; the key is never printed, logged, or committed). The deploy transaction is FINALIZED and its stored source byte-matches `contracts/contract.py` (20745 bytes).
 >
-> **On-chain steward scenario status (PARTIAL, blocked by an external gateway):** `create_job` is proven live on StudioNet (it locks real GEN, see `evidence/verification.json`). The full steward appeal/recovery payout could not be executed end to end because the contract's only accepted evidence gateway, `https://ipfs.io/ipfs/`, now returns HTTP 429/403 (a "service-worker gateway only" Cloudflare interstitial) to non-browser fetchers, including the on-chain validators. Every `submit_period` therefore fails its evidence fetch and reverts with "Evidence not fetchable at submission time"; the sealed `strict_eq` value on those reverted transactions is literally `FETCH_FAILED` (raw explorer records under `evidence/txs/` and `evidence/verify/`, verified across 4 independent attempts by `scripts/verify_transactions.py`). This is a gateway availability change, not a defect in the v0.4.0 reserved-liability logic, which remains proven by 46 passing Direct Mode tests and the green CI run.
+> **On-chain steward scenario status (COMPLETE):** the full steward loop now runs end to end on StudioNet. `submit_period` sealed on the `gateway.pinata.cloud` allowlist entry; the LLM audit returned **LOW** on the first round and stayed **LOW** after the appeal (weak evidence, as expected), recovery inside the open appeal window left the budget at the 5 GEN max-reachable reserve, the appeal was accepted, and `finalize` paid the worker 3 GEN funded with no "Job budget insufficient". Every step is captured under `evidence/` and re-verified against the explorer JSON API by `scripts/verify_transactions.py` (11/11 FINALIZED with the expected method and execution result). See *v0.4.1 on-chain run* below for the transaction hashes and invariants.
+
+## 📝 Changes from v0.4.0 to v0.4.1
+
+### Steward Feedback ("the contract is effectively unusable on chain today")
+
+> v0.4.0 accepted evidence only from the single hardcoded prefix `https://ipfs.io/ipfs/`. `ipfs.io` now returns HTTP 429 (a service-worker interstitial) to non-browser fetchers, including the on-chain validators, so every `submit_period` sealed `FETCH_FAILED` and reverted. The reserved-liability logic was correct but unreachable on chain.
+
+**Fixed at the root with a small, strict gateway allowlist.** `IPFS_GATEWAY_PREFIX` is replaced by a fixed allowlist of HTTPS gateway hosts. Integrity does not change: the sealed value is still sha256 of the cleaned fetched bytes, and `resolve_period` still re-fetches the stored URL and re-hashes it, so *which* gateway served the bytes is irrelevant to the settlement.
+
+- **Allowlist:** `gateway.pinata.cloud`, `ipfs.io`, `dweb.link`, `w3s.link` (https only, at most four, chosen from gateways that returned 200 to a validator-style aiohttp client with no cookies).
+- **Validation stays strict, unchanged in spirit.** `_is_content_addressed_url` requires an exact scheme+host match against the allowlist via an anchored regex (`^https://(<host>)/ipfs/(<CID>)$`), so a lookalike host cannot slip through: the host must be one of the four and must be immediately followed by `/ipfs/`. It rejects `https://ipfs.io.evil.com/...`, `https://ipfs.io@evil.com/...` (userinfo), any non-allowlisted host, `http://`, non-default ports, uppercase/unicode host tricks, query strings, fragments, extra path segments, path traversal, an empty CID, subdomain-style `https://<CID>.ipfs.dweb.link/...` URLs, uppercase CIDs, non-CID text, and over-length URLs. The CID must be a syntactically valid CIDv0 (`Qm` + 44 base58 chars) or CIDv1 (lowercase base32 starting with `b`), and the URL is length-capped (`MAX_URL_LEN`).
+- **Cross-gateway integrity test.** A new Direct Mode case proves that if the same stored URL returns different bytes at audit time (what a gateway HTML wrapper or resized image would produce for the same CID), the sealed-hash comparison still yields `MISMATCH` with pay 0, before any LLM call. A companion case proves the seal is byte-identical across two different allowed gateways for the same content, so integrity is a property of the content, not the gateway.
+- **Nothing else moved:** the availability policy (3 failed fetches -> `unresolvable`) and the entire reserved-liability path are untouched.
+
+Regression coverage: `tests/test_gateways.py` (each allowed gateway accepted; nine attack URLs rejected before any state change; gateway-independent seal; cross-gateway different-bytes caught) plus added cases in `tests/test_guards.py`. A mutation check (temporarily relaxing the URL validator to a substring test) turns 24 of these tests red, confirming they genuinely exercise the validation.
 
 ## 📝 Changes from v0.3.0 to v0.4.0
 
@@ -83,7 +99,7 @@ Regression coverage: `tests/test_reserved_appeal.py` (the steward's exact LOW/ME
 
 ## 🧪 Test Matrix (reference txs recorded on the v0.3.0 StudioNet deployment)
 
-> These on-chain hashes are from the **v0.3.0** reference run on StudioNet. The v0.4.0 reserved-liability/appeal path is proven by Direct Mode (46 tests, green CI). v0.4.0 is now deployed on StudioNet, but a v0.4.0 on-chain steward re-run could not be executed because `ipfs.io` no longer serves the evidence to non-browser fetchers (see *Deployment* and `evidence/`).
+> These on-chain hashes are from the **v0.3.0** reference run on StudioNet and are kept for continuity. The v0.4.1 reserved-liability/appeal/gateway path is proven by 79 passing Direct Mode + unit tests (green CI) **and** by a completed v0.4.1 on-chain steward run (see *v0.4.1 on-chain run* under *Deployment*).
 
 ### Test A: Budget Guard
 - submit 12h vs budget 8 → ❌ "Budget must cover claimed hours at max multiplier"
@@ -129,7 +145,7 @@ Pure helper function tests - no SDK installation required:
 
 **Run:** `pytest tests/test_guards.py -v`
 
-### 2. Direct Mode Tests (`tests/test_regression.py`, `tests/test_reserved_appeal.py`, `tests/test_adversarial.py`)
+### 2. Direct Mode Tests (`tests/test_regression.py`, `tests/test_reserved_appeal.py`, `tests/test_adversarial.py`, `tests/test_gateways.py`)
 In-memory contract logic against the real Direct Mode runner, with mocked `gl.nondet.web.get()` / `gl.nondet.exec_prompt()` and an EthSend-capture hook for payouts:
 - **Regression:** budget guard, hours cap, dead-URL rejection, evidence mutation → MISMATCH, rubric-injection containment, substring-tier rejection, validator disagreement, happy path, reserved recovery → funded finalize, stale dismissal.
 - **Reserved liability & appeal (`test_reserved_appeal.py`):** the steward's exact scenario for LOW/MEDIUM/UNVERIFIABLE → recover → appeal → HIGH → finalize, window-elapsed finality, appeal-used finality, mixed-state multi-period reserve sum, and the exact appeal-window boundary (one shared predicate).
@@ -142,44 +158,68 @@ In-memory contract logic against the real Direct Mode runner, with mocked `gl.no
 **Run:** `bash scripts/setup_direct_test_cache.sh contracts/contract.py && pytest tests/ -v`
 
 ### 3. On-Chain Integration
-Reference tx hashes in the Test Matrix above are from the **v0.3.0** StudioNet deployment. v0.4.0 is now live on StudioNet (`0x89D31CB0CEe1465023782D7F89d9244f8Fc830CF`): `create_job` is proven on-chain (it locks GEN), but the full steward appeal/recovery payout could not be run because `ipfs.io`, the only evidence gateway the contract accepts, now returns HTTP 429/403 to non-browser fetchers so `submit_period` fails its on-chain evidence fetch (see *Deployment* and `evidence/`).
+Reference tx hashes in the Test Matrix above are from the **v0.3.0** StudioNet deployment. The v0.4.1 deployment (`0xb16d9670A39e9eF22641312c1bFDE5E4e9673AF4`) now has a **completed** on-chain steward run: `submit_period` sealed through the `gateway.pinata.cloud` allowlist entry, and the full resolve -> recover -> appeal -> resolve -> finalize loop paid the worker (see *v0.4.1 on-chain run* under *Deployment* and `evidence/`).
 
-**CI Status:** ✅ 46/46 (9 unit + 37 Direct Mode) passing in GitHub Actions via `pytest tests/` - see [workflow runs](https://github.com/hoveiser/fairpay/actions)
+**CI Status:** ✅ 79/79 (27 unit + 52 Direct Mode) passing in GitHub Actions via `pytest tests/` - see [workflow runs](https://github.com/hoveiser/fairpay/actions)
 
 ## 🚀 Deployment
 
-v0.4.0 is deployed on StudioNet through `genlayer-py` (the CLI keystore is locked in this environment, so the SDK signs with the key in the gitignored `.env`). The deployer account is `0x3de43AA2f7162c80af98abe78222aE0Cdf83c506`; the key is never printed, logged, or committed.
+v0.4.1 is deployed on StudioNet through `genlayer-py` (the CLI keystore is locked in this environment, so the SDK signs with the key in the gitignored `.env`). The deployer/employer account is `0x3de43AA2f7162c80af98abe78222aE0Cdf83c506`; the key is never printed, logged, or committed.
 
-- Contract: `0x89D31CB0CEe1465023782D7F89d9244f8Fc830CF`
-- Deploy tx (FINALIZED): `0x92e205ec02b43a090911f3069e49117182b0e8016947689b5d7166c8b9fb2c55`
-- Stored source byte-matches `contracts/contract.py` (19002 bytes). Reproduce: `./scripts/deploy_studionet.py`, then `./scripts/verify_transactions.py`.
+- Contract: `0xb16d9670A39e9eF22641312c1bFDE5E4e9673AF4`
+- Deploy tx (FINALIZED): `0x3fa27a52f1e5faf3dce7f3bbc18038bfbd45700598dc4d3fb140d23d10c3dd4b`
+- Stored source byte-matches `contracts/contract.py` (20745 bytes, verified via `gen_getContractCode`; raw proof in `evidence/deploy.json` and `evidence/stored_source.bin`). Reproduce: `./scripts/deploy_studionet.py`, then `./scripts/verify_transactions.py`.
 
-What is and is not proven on chain:
-- `create_job` ran live and locked 10 GEN (FINALIZED, execution SUCCESS): `0x0f5e26f71d2a186f04dce60677fb56de95642b689790b91fabd3f319daff5306`.
-- The `submit_period`/`resolve_period`/`recover_budget`/`appeal`/`finalize` steward path could not be executed on chain today: `ipfs.io` (the contract's mandated, immutable evidence gateway) serves an HTTP 429/403 "service-worker gateway only" interstitial to non-browser clients, including the validators, so the evidence fetch returns `FETCH_FAILED` and `submit_period` reverts. This was confirmed on chain across 4 independent attempts (raw explorer records in `evidence/`). It is a gateway availability change, not a v0.4.0 logic defect.
+### v0.4.1 on-chain run (steward scenario, complete)
 
-```bash
-# deploy v0.4.0 to StudioNet with the key from .env (never printed)
-./.venv/bin/python scripts/deploy_studionet.py
-# verify every StudioNet tx (status, method, execution result) via the explorer JSON API
-./.venv/bin/python scripts/verify_transactions.py
-```
+Which gateway the **validators** could reach (probed on chain by `submit_period` against `evidence/scenario.json` / `evidence/gateway_probe.json`, not from local curl):
+
+| Gateway (same CID `bafkreidwkl2…rsit5zq`) | On-chain result | tx |
+|---|---|---|
+| `dweb.link` | FETCH_FAILED (reverted: "Evidence not fetchable at submission time") | `0xf29519efe8222f645137b25ff59f9d7eecf90b6286a1e22611ce437f16f354f8` |
+| `w3s.link` | FETCH_FAILED (reverted) | `0x8b662d23bf99643fb908c3d6b047aa704959b47d57f7a5da1811a57c022ace78` |
+| `ipfs.io` | FETCH_FAILED (reverted) | `0x0eb05b02e4b9d15dd35459c59ad1c642921f8ca4fdd047645bfb59fc8c8ef9b9` |
+| `gateway.pinata.cloud` | **SEALED** (validators fetched the bytes) | `0x08e43568eee6d9a96186b5755f647b1a7a6e8c666a2f69f9a6c4cd47382abc9b` |
+
+So `gateway.pinata.cloud` is the one allowlisted gateway the chain's validators can currently fetch; validation was never weakened to make it pass.
+
+Steward loop on job 3 / period 2 (all FINALIZED, execution SUCCESS unless noted), with the invariant each one proves:
+
+| Step | Method | tx hash |
+|---|---|---|
+| create_job (locked 10 GEN) | `create_job` | `0x0c65da680d72b37b9bb14e94822b896bc70052a1e0174413785429bac2c322e0` |
+| submit_period (sealed, pinata) | `submit_period` | `0x08e43568eee6d9a96186b5755f647b1a7a6e8c666a2f69f9a6c4cd47382abc9b` |
+| resolve_period (first audit) | `resolve_period` | `0xe381c0a14f2af09e108c5cccab8d6695910405a5a2d19ee5f51e0e26cdf0118a` |
+| recover_budget (inside open appeal window) | `recover_budget` | `0x58d4b1db8a335040f096ab0f8196375a1f4ea0c948bb6fd48021304f8f9583bb` |
+| appeal (worker) | `appeal` | `0x50d115bd42a31f6a0115cd92963a945d3a276781f78778ad9ddba218a3d135e9` |
+| resolve_period (final round) | `resolve_period` | `0x48e458ca67c36af65d5dd6ed632cc5cbdcd10d225e547e1bc3b243d3abd52aba` |
+| finalize (funded payout) | `finalize` | `0x1297845d873a41b308b95e5c3ed2329dcdb935bbc11e1a367c40b0061cf8111c` |
+
+Invariants observed (from `evidence/scenario.json`, all re-checked against the explorer):
+- **Tier:** the LLM audit returned **LOW** on the first round and stayed **LOW** after the appeal (the evidence was deliberately weak, a status note with no concrete deliverable). The first tier was not HIGH; the recovery-inside-window path was still exercised.
+- **Reserved liability before recovery:** 5 GEN (= 4h × 1 GEN × 1.25, the max still-reachable payout, held because the appeal window was open).
+- **After recovery:** budget 10 → **5 GEN**, reserved still **5 GEN**, employer GEN balance 83 → 88 GEN. Invariant `budget_after (5) ≥ reserved_after (5) ≥ max_reachable (5)` holds: recovery withdrew only the excess and left `finalize` funded.
+- **Appeal:** accepted (period moved to disputed), then re-resolved to a final LOW.
+- **Finalize:** succeeded with no "Job budget insufficient"; worker GEN balance 0 → **3 GEN** (the LOW pay for 4h × 1 GEN × 0.75 = 3 GEN), and the recorded payout equals the observed balance delta exactly (`payout_matches_balance: true`).
+
+The full loop (create_job through finalize) is reproducible with `./.venv/bin/python scripts/run_steward_scenario.py` and re-verifiable with `./.venv/bin/python scripts/verify_transactions.py`. Every hash above is copied from the raw records under `evidence/`, not retyped.
 
 ## 📂 Files
 
-- `contracts/contract.py` - FairPay source (v0.4.0)
+- `contracts/contract.py` - FairPay source (v0.4.1)
 - `tests/conftest.py` - Direct Mode harness (EthSend capture, time control, independent reserve oracle)
-- `tests/test_guards.py` - Unit tests for pure helpers (sanitize/clean/ceil/tier parsing)
+- `tests/test_guards.py` - Unit tests for pure helpers (sanitize/clean/ceil/tier parsing, plus the gateway allowlist URL validator and its attack cases)
 - `tests/test_regression.py` - Direct Mode regression suite
 - `tests/test_reserved_appeal.py` - PART A reserved-liability / appeal regression
 - `tests/test_adversarial.py` - PART B adversarial audit suite
+- `tests/test_gateways.py` - v0.4.1 multi-gateway evidence (each allowed gateway, attack URLs rejected before state change, gateway-independent seal, cross-gateway different-bytes caught)
 - `.github/workflows/regression.yml` - CI configuration
 - `scripts/setup_direct_test_cache.sh` - seeds the Direct Mode runner cache so CI is not cache-dependent
-- `scripts/deploy_studionet.py` - deploys v0.4.0 to StudioNet via genlayer-py, resolves the address, byte-matches the source
-- `scripts/run_steward_scenario.py` - live StudioNet steward scenario runner (invariants, balances, reserved_liability)
+- `scripts/deploy_studionet.py` - deploys v0.4.1 to StudioNet via genlayer-py, resolves the address, byte-matches the source
+- `scripts/run_steward_scenario.py` - live StudioNet steward scenario runner (gateway probe, invariants, balances, reserved_liability)
 - `scripts/verify_transactions.py` - verifies each StudioNet tx against the explorer JSON API
-- `evidence/` - raw deploy/scenario/verification records (never paraphrased)
-- `index.html` - static project landing page (v0.4.0); not part of the contract or CI
+- `evidence/` - raw deploy/scenario/gateway-probe/verification records (never paraphrased)
+- `index.html` - static project landing page (v0.4.1); not part of the contract or CI
 - `README.md` - this documentation
 
 ## ⚠️ Threat Model
@@ -194,7 +234,9 @@ What is and is not proven on chain:
 | Employer injects rubric to force a tier | Sanitize + `<data>` untrusted wrapping |
 | Worker injects instructions via the **evidence body** | HTML-clean, length-capped, wrapped as untrusted `<data evidence>` |
 | Worker inflates hours | Budget guard (max-multiplier) + per-period cap |
-| Worker mutates evidence after submit | Seal at submission + same-CID re-hash → MISMATCH |
+| Worker mutates evidence after submit | Seal at submission + same-CID re-hash -> MISMATCH |
+| Worker points evidence at a lookalike/attacker gateway | Anchored allowlist regex: host must equal one of the four and be immediately followed by `/ipfs/`; userinfo/lookalike-port/query/fragment/traversal/subdomain forms rejected before any state change (v0.4.1) |
+| Worker exploits gateway choice to swap bytes | Integrity is content-derived, not gateway-derived: the seal is sha256 of the fetched bytes and re-checked on the stored URL, so different bytes for the same URL -> MISMATCH (v0.4.1) |
 | Worker ghosts (locks funds) | Stale dismissal |
 | Substring tier bug | Exact canonical JSON parsing |
 | 404 sealed as evidence | HTTP-error rejection at seal |
@@ -203,7 +245,7 @@ What is and is not proven on chain:
 
 1. **LLM tier variance** - one-shot appeal; the final round is binding, so a persistent validator/leader disagreement on the last round still settles on whatever the auditors return.
 2. **Worker-controlled evidence content** - sealing guarantees *continuity* between submission and audit, not authenticity: a worker can pin a CID of impressive-looking but hollow content, and the audit is only as good as the model.
-3. **Gateway availability** - 3 failed fetches mark a period `unresolvable` and free the slot (worker resubmits); a *prolonged* outage delays settlement rather than paying 0, but there is no external fallback oracle.
+3. **Gateway availability** - the allowlist widens reachability (v0.4.1), but if *all four* listed gateways are simultaneously unreachable to the validators a period still cannot seal: 3 failed fetches mark it `unresolvable` and free the slot (worker resubmits), so a *prolonged* whole-allowlist outage delays settlement rather than paying 0, and there is no external fallback oracle beyond the allowlist. Chosen because content addressing + the sealed hash mean adding gateways raises availability without changing integrity.
 4. **Consensus divergence** - relies on leader/validator rotation (protocol behavior); Direct Mode runs the leader only, so full consensus is exercised on-chain, not in the unit suite.
 5. **Reserved-liability reserve uses a 1.25× ceiling** even for rulings that will never exceed a lower tier; this over-reserves (never under-reserves), so some budget stays locked until a period is truly final.
 
@@ -211,7 +253,7 @@ What is and is not proven on chain:
 
 1. Open https://studio.genlayer.com and deploy `contract.py`.
 2. `create_job(worker, role, rubric, rate, appeal_window_sec, max_hours_per_period, stale_window_sec)` with GEN value - all parameters are range-checked (see *Adversarial hardening*) before the budget is locked.
-3. `submit_period(job_id, hours, items_json)` where items is a JSON array of `{desc, url, impact}` and `url` is `https://ipfs.io/ipfs/<CID>`.
+3. `submit_period(job_id, hours, items_json)` where items is a JSON array of `{desc, url, impact}` and `url` is a canonical CID URL on one of the allowlisted gateways (`https://gateway.pinata.cloud/ipfs/<CID>`, `https://ipfs.io/ipfs/<CID>`, `https://dweb.link/ipfs/<CID>`, or `https://w3s.link/ipfs/<CID>`); any other host, scheme, port, or URL shape is rejected before state change.
 4. `resolve_period(period_id)` → AI audits and returns tier with on-chain reasoning.
 5. `finalize(period_id)` after the appeal window closes (or after appealing) → worker paid.
 6. Try recovery attempts, mutated evidence, injections (rubric *and* evidence body), stale periods.

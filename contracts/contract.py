@@ -1,4 +1,4 @@
-# v0.4.0
+# v0.4.1
 # { "Depends": "py-genlayer:1jb45aa8ynh2a9c9xn3b7qqh8sm5q93hwfp7jqmwsfhh8jpz09h6" }
 
 from genlayer import *
@@ -13,8 +13,25 @@ MAX_ITEMS = 3
 MAX_URL_LEN = 500
 MAX_TEXT_LEN = 200
 MAX_EVIDENCE_LEN = 1500
-IPFS_GATEWAY_PREFIX = "https://ipfs.io/ipfs/"
+# Immutable IPFS gateways allowed for sealed evidence: path-style /ipfs/<CID>,
+# https only, at most four entries. Integrity NEVER depends on which gateway
+# served the bytes: submit seals the sha256 of the cleaned fetched text and
+# resolve re-fetches and re-hashes it, so any gateway that returns different
+# bytes for the same CID (an HTML wrapper, a resized image, a mutated file)
+# is caught as MISMATCH with zero pay. This list is chosen by probing each
+# gateway with a validator-style client; the on-chain validators are the final
+# judge of availability (see README threat model).
+GATEWAY_HOSTS = ("gateway.pinata.cloud", "ipfs.io", "dweb.link", "w3s.link")
 _CID_RE = _re.compile(r"^(Qm[1-9A-HJ-NP-Za-km-z]{44}|b[a-z2-7]{20,})$")
+# Anchored: exact https scheme, exact allowlisted host, then exactly /ipfs/ and
+# one non-empty path segment. The host must be immediately followed by /ipfs/,
+# which defeats lookalikes such as https://ipfs.io.evil.com/..., userinfo tricks
+# https://ipfs.io@evil.com/..., ports, and http://. The captured segment is then
+# re-checked against the strict CID pattern (rejects query, fragment, traversal,
+# and extra path segments because none of them can fullmatch a CID).
+_GATEWAY_RE = _re.compile(
+    r"^https://(?:" + "|".join(_re.escape(h) for h in GATEWAY_HOSTS) + r")/ipfs/([^/]+)$"
+)
 
 # create_job bounds (validated BEFORE any state change or value is locked).
 MIN_APPEAL_WINDOW_SEC = 60
@@ -53,10 +70,22 @@ def _max_liability(hours: int, rate: int) -> int:
     return _ceil_div(hours * rate * 125 * 10**18, 100)
 
 def _is_content_addressed_url(url: str) -> bool:
-    """Accept only canonical immutable IPFS gateway URLs for sealed evidence."""
-    if not url.startswith(IPFS_GATEWAY_PREFIX):
+    """Accept only canonical immutable IPFS gateway URLs for sealed evidence.
+
+    Validation stays strict: the scheme must be exactly https, the host must be
+    an exact allowlisted entry (no lookalike domains, userinfo, or ports), the
+    path must be exactly /ipfs/<CID> with no extra segments, traversal, query,
+    or fragment, the CID must be a syntactically valid CIDv0 (Qm + 44 base58)
+    or CIDv1 (lowercase base32 starting with b), and the whole URL must fit the
+    length cap. Only path-style gateways are accepted; subdomain-style URLs are
+    not allowed.
+    """
+    if len(url) > MAX_URL_LEN:
         return False
-    return _CID_RE.fullmatch(url[len(IPFS_GATEWAY_PREFIX):]) is not None
+    m = _GATEWAY_RE.match(url)
+    if m is None:
+        return False
+    return _CID_RE.fullmatch(m.group(1)) is not None
 
 def _canonical_result(raw):
     """Normalize a raw exec_prompt output to {tier, reasoning}.

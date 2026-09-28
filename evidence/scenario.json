@@ -1,0 +1,75 @@
+{
+  "contract": "0xb16d9670A39e9eF22641312c1bFDE5E4e9673AF4",
+  "employer": "0x3de43AA2f7162c80af98abe78222aE0Cdf83c506",
+  "worker": "0x13F97bdC5a507B60130EafA245c15f6BA40b91CB",
+  "cid_weak": "bafkreidwkl2tdyhpeij4es7ng23qiexzxn5nq2ae2ckf6nmtsahrsit5zq",
+  "params": {
+    "rate": 1,
+    "hours": 4,
+    "budget_gen": 10,
+    "appeal_window_sec": 604800
+  },
+  "gateway_probe": {
+    "dweb.link": {
+      "url": "https://dweb.link/ipfs/bafkreidwkl2tdyhpeij4es7ng23qiexzxn5nq2ae2ckf6nmtsahrsit5zq",
+      "tx": "0xf29519efe8222f645137b25ff59f9d7eecf90b6286a1e22611ce437f16f354f8",
+      "finalized": "FINALIZED",
+      "exec": "ERROR",
+      "sealed_output": "AmV4aXRfY29kZSAx"
+    },
+    "w3s.link": {
+      "url": "https://w3s.link/ipfs/bafkreidwkl2tdyhpeij4es7ng23qiexzxn5nq2ae2ckf6nmtsahrsit5zq",
+      "tx": "0x8b662d23bf99643fb908c3d6b047aa704959b47d57f7a5da1811a57c022ace78",
+      "finalized": "FINALIZED",
+      "exec": "ERROR",
+      "sealed_output": "AmV4aXRfY29kZSAx"
+    },
+    "ipfs.io": {
+      "url": "https://ipfs.io/ipfs/bafkreidwkl2tdyhpeij4es7ng23qiexzxn5nq2ae2ckf6nmtsahrsit5zq",
+      "tx": "0x0eb05b02e4b9d15dd35459c59ad1c642921f8ca4fdd047645bfb59fc8c8ef9b9",
+      "finalized": "FINALIZED",
+      "exec": "ERROR",
+      "sealed_output": "AmV4aXRfY29kZSAx"
+    },
+    "gateway.pinata.cloud": {
+      "url": "https://gateway.pinata.cloud/ipfs/bafkreidwkl2tdyhpeij4es7ng23qiexzxn5nq2ae2ckf6nmtsahrsit5zq",
+      "tx": "0x08e43568eee6d9a96186b5755f647b1a7a6e8c666a2f69f9a6c4cd47382abc9b",
+      "finalized": "FINALIZED",
+      "exec": "SUCCESS",
+      "sealed_output": "ABE="
+    }
+  },
+  "txs": {
+    "create_job": "0x0c65da680d72b37b9bb14e94822b896bc70052a1e0174413785429bac2c322e0",
+    "submit_period": "0x08e43568eee6d9a96186b5755f647b1a7a6e8c666a2f69f9a6c4cd47382abc9b",
+    "resolve_first": "0xe381c0a14f2af09e108c5cccab8d6695910405a5a2d19ee5f51e0e26cdf0118a",
+    "recover_budget": "0x58d4b1db8a335040f096ab0f8196375a1f4ea0c948bb6fd48021304f8f9583bb",
+    "appeal": "0x50d115bd42a31f6a0115cd92963a945d3a276781f78778ad9ddba218a3d135e9",
+    "resolve_final": "0x48e458ca67c36af65d5dd6ed632cc5cbdcd10d225e547e1bc3b243d3abd52aba",
+    "finalize": "0x1297845d873a41b308b95e5c3ed2329dcdb935bbc11e1a367c40b0061cf8111c"
+  },
+  "notes": [],
+  "scenario_gateway": "gateway.pinata.cloud",
+  "job_id": 3,
+  "period_id": 2,
+  "first_tier": "LOW",
+  "first_status": "adjudicated",
+  "reserved_before_recovery": 5000000000000000000,
+  "budget_before_recovery": 10000000000000000000,
+  "recover_ok": true,
+  "reserved_after_recovery": 5000000000000000000,
+  "budget_after_recovery": 5000000000000000000,
+  "max_reachable_payout": 5000000000000000000,
+  "employer_balance_before_recover": 83000000000000000000,
+  "employer_balance_after_recover": 88000000000000000000,
+  "invariant_budget_ge_reserved_after_recovery": true,
+  "appeal_succeeded": true,
+  "final_tier": "LOW",
+  "final_pay": 3000000000000000000,
+  "finalize_ok": true,
+  "finalize_succeeded": true,
+  "worker_balance_before_finalize": 0,
+  "worker_balance_after_finalize": 3000000000000000000,
+  "worker_payout_delta": 3000000000000000000,
+  "payout_matches_balance": true
+}

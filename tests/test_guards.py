@@ -3,6 +3,8 @@ import os
 import sys
 import types
 
+import pytest
+
 
 def _install_genlayer_stub():
     """Return the list of sys.modules keys this stub added (empty if a real
@@ -87,6 +89,51 @@ def test_content_addressed_url_requires_canonical_ipfs_cid():
     assert _is_content_addressed_url("https://ipfs.io/ipfs/" + cid)
     assert not _is_content_addressed_url("https://example.com/proof")
     assert not _is_content_addressed_url("https://ipfs.io/ipfs/" + cid + "?download=1")
+
+
+# ---- v0.4.1 multi-gateway evidence: acceptance ------------------------------
+def test_content_addressed_url_accepts_every_allowed_gateway():
+    cidv1 = "bafkreidwkl2tdyhpeij4es7ng23qiexzxn5nq2ae2ckf6nmtsahrsit5zq"
+    cidv0 = "Qm" + "a" * 44
+    for host in ("gateway.pinata.cloud", "ipfs.io", "dweb.link", "w3s.link"):
+        assert _is_content_addressed_url("https://" + host + "/ipfs/" + cidv1)
+        assert _is_content_addressed_url("https://" + host + "/ipfs/" + cidv0)
+
+
+# ---- v0.4.1 multi-gateway evidence: every attack vector rejected ------------
+_GOOD_CID = "Qm" + "a" * 44
+@pytest.mark.parametrize("url", [
+    # lookalike host that merely starts with an allowed host
+    "https://ipfs.io.evil.com/ipfs/" + _GOOD_CID,
+    "https://gateway.pinata.cloud.ipfs.dweb.link/ipfs/" + _GOOD_CID,
+    # userinfo trick: allowed host followed by @attacker
+    "https://ipfs.io@evil.com/ipfs/" + _GOOD_CID,
+    # wrong scheme
+    "http://ipfs.io/ipfs/" + _GOOD_CID,
+    # explicit port
+    "https://ipfs.io:8443/ipfs/" + _GOOD_CID,
+    # uppercase / case-trick host and path segment
+    "https://Ipfs.IO/ipfs/" + _GOOD_CID,
+    "https://ipfs.io/IPFS/" + _GOOD_CID,
+    # query / fragment / extra path segment smuggled after the CID
+    "https://ipfs.io/ipfs/" + _GOOD_CID + "?download=1",
+    "https://ipfs.io/ipfs/" + _GOOD_CID + "#frag",
+    "https://ipfs.io/ipfs/" + _GOOD_CID + "/extra",
+    # traversal and empty path
+    "https://ipfs.io/ipfs/../evil",
+    "https://ipfs.io/ipfs/",
+    # unknown gateway
+    "https://unknown.example/ipfs/" + _GOOD_CID,
+    # subdomain-style gateway (only path-style is accepted)
+    "https://bafkreidwkl2tdyhpeij4es7ng23qiexzxn5nq2ae2ckf6nmtsahrsit5zq.ipfs.dweb.link",
+    # malformed CIDs
+    "https://ipfs.io/ipfs/not-a-valid-cid",
+    "https://ipfs.io/ipfs/BAFKREIDWKL2TDYHPEIJ4ES7NG23QIEXZXN5NQ2AE2CKF6NMTSAHRSIT5ZQ",
+    # over the length cap
+    "https://ipfs.io/ipfs/" + _GOOD_CID + "/" + "x" * 600,
+])
+def test_content_addressed_url_rejects_attack_urls(url):
+    assert _is_content_addressed_url(url) is False
 
 
 # ---- Part B4: integer arithmetic + defined rounding rule ---------------------

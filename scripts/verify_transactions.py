@@ -72,16 +72,33 @@ def exec_and_seal(tx: dict):
             seal = base64.b64decode(v)
         except Exception:
             pass
-    return r0.get("execution_result"), seal
+    gr = r0.get("genvm_result") or {}
+    err = gr.get("stderr") or ""
+    if isinstance(err, list):
+        err = "".join(chr(c) if isinstance(c, int) else str(c) for c in err)
+    reason = err.strip().splitlines()[-1] if err.strip() else None
+    return r0.get("execution_result"), seal, reason
 
 
-# Manifest: (name, hash, expected_method, expected_execution_result)
+# Manifest: (name, hash, expected_method, expected_execution_result, expected_reason_substring)
+# want_method None skips the method check (used for the deploy tx, whose calldata
+# carries no function name). expected_reason is checked only for reverted submits.
+SCENARIO = json.load(open(EVIDENCE / "scenario.json")) if (EVIDENCE / "scenario.json").exists() else {"txs": {}, "gateway_probe": {}}
+_s = SCENARIO["txs"]
+_p = SCENARIO["gateway_probe"]
+FETCH_FAIL = "Evidence not fetchable at submission time"
 MANIFEST = [
-    ("create_job_job1", "0x0f5e26f71d2a186f04dce60677fb56de95642b689790b91fabd3f319daff5306", "create_job", "SUCCESS"),
-    ("submit_period_job1", "0xa386f35baaa971dbff9853bf0762f6ff4e1f7ff1279c8af5dc51c8a9bb7be123", "submit_period", "ERROR"),
-    ("submit_period_job2", "0x1679815deedaad51cef984a951d0d56da21cf1ed701d9821db634edcc27bdec0", "submit_period", "ERROR"),
-    ("submit_period_job3", "0xfa277a35c53ab95f6961531445dd5f82e7444f4af5c1ccde97993ce27c513f1c", "submit_period", "ERROR"),
-    ("submit_period_job4", "0xc671792fd52c12bafdd29aa0acd2214fb07982857f021bb4f13e2700e49c85fe", "submit_period", "ERROR"),
+    ("deploy_contract", json.load(open(EVIDENCE / "deploy.json"))["deploy_txid"], None, "SUCCESS", None),
+    ("01_create_job", _s["create_job"], "create_job", "SUCCESS", None),
+    ("02_submit_dweb", _p["dweb.link"]["tx"], "submit_period", "ERROR", FETCH_FAIL),
+    ("02_submit_w3s", _p["w3s.link"]["tx"], "submit_period", "ERROR", FETCH_FAIL),
+    ("02_submit_ipfs", _p["ipfs.io"]["tx"], "submit_period", "ERROR", FETCH_FAIL),
+    ("02_submit_pinata", _p["gateway.pinata.cloud"]["tx"], "submit_period", "SUCCESS", None),
+    ("03_resolve_first", _s["resolve_first"], "resolve_period", "SUCCESS", None),
+    ("05_recover_budget", _s["recover_budget"], "recover_budget", "SUCCESS", None),
+    ("06_appeal", _s["appeal"], "appeal", "SUCCESS", None),
+    ("07_resolve_final", _s["resolve_final"], "resolve_period", "SUCCESS", None),
+    ("08_finalize", _s["finalize"], "finalize", "SUCCESS", None),
 ]
 
 
@@ -92,7 +109,7 @@ def main() -> int:
 
     print(f"verifying contract {contract} on StudioNet\n")
 
-    for name, h, want_method, want_exec in MANIFEST:
+    for name, h, want_method, want_exec, want_reason in MANIFEST:
         tx, source = tx_by_hash(h, name)
         if tx is None:
             print(f"[MISSING] {name} {h} not found on explorer")
@@ -100,25 +117,25 @@ def main() -> int:
             continue
         (VDIR / f"{name}.json").write_text(json.dumps(tx, indent=2))
         method = decode_calldata(tx)
-        ex, seal = exec_and_seal(tx)
+        ex, seal, reason = exec_and_seal(tx)
         ok_status = tx.get("status") == "FINALIZED"
-        ok_method = method == want_method
+        ok_method = want_method is None or method == want_method
         ok_exec = str(ex).upper() == want_exec
-        ok_seal = True
-        if want_exec == "ERROR":
-            # reverted evidence submissions must show the ipfs.io fetch failed
-            ok_seal = bool(seal) and seal.endswith(b"FETCH_FAILED")
-        row_ok = ok_status and ok_method and ok_exec and ok_seal
+        ok_reason = True
+        if want_reason is not None:
+            ok_reason = bool(reason) and want_reason in reason
+        row_ok = ok_status and ok_method and ok_exec and ok_reason
         out["all_ok"] = out["all_ok"] and row_ok
         out["transactions"].append({
             "name": name, "hash": h, "explorer_tx": f"{EXPLORER}/tx/{h}",
             "status": tx.get("status"), "method": method,
-            "execution_result": ex, "sealed_eq_output": (seal.decode("latin-1", "ignore") if seal else None),
+            "execution_result": ex, "revert_reason": reason,
+            "sealed_eq_output": (seal.decode("latin-1", "ignore") if seal else None),
             "record_source": source,
             "checks_ok": row_ok,
         })
         print(f"[{'OK ' if row_ok else 'BAD'}] {name:20s} status={tx.get('status')} "
-              f"method={method} exec={ex} seal={seal!r} value={int(tx.get('value') or 0)//10**18}gen src={source}")
+              f"method={method} exec={ex} reason={str(reason)[:60]!r} value={int(tx.get('value') or 0)//10**18}gen src={source}")
 
     (EVIDENCE / "verification.json").write_text(json.dumps(out, indent=2))
     print("\nALL CHECKS PASSED" if out["all_ok"] else "\nSOME CHECKS FAILED")
