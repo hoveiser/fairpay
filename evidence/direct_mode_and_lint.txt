@@ -1,0 +1,59 @@
+# FairPay v0.4.0 verification evidence
+# Generated: 2026-09-28T05:10:02Z
+
+## genvm-lint check contracts/contract.py
+
+✓ Lint passed (3 checks)
+✓ Validation passed
+  Contract: FairPay
+  Methods: 13 (4 view, 9 write)
+
+## Direct Mode: pytest tests/ -v
+============================= test session starts ==============================
+tests/test_adversarial.py::test_create_job_bounds_rejected_before_state_change[rate-0-Rate must be positive] PASSED [  2%]
+tests/test_adversarial.py::test_create_job_bounds_rejected_before_state_change[rate-1000000001-Rate exceeds allowed bound] PASSED [  4%]
+tests/test_adversarial.py::test_create_job_bounds_rejected_before_state_change[appeal_window-1-Appeal window too short] PASSED [  6%]
+tests/test_adversarial.py::test_create_job_bounds_rejected_before_state_change[appeal_window-604801-Appeal window too long] PASSED [  8%]
+tests/test_adversarial.py::test_create_job_bounds_rejected_before_state_change[max_hours-0-Max hours must be positive] PASSED [ 10%]
+tests/test_adversarial.py::test_create_job_bounds_rejected_before_state_change[max_hours-721-Max hours exceeds allowed bound] PASSED [ 13%]
+tests/test_adversarial.py::test_create_job_bounds_rejected_before_state_change[stale_window-1-Stale window too short to allow resolution] PASSED [ 15%]
+tests/test_adversarial.py::test_create_job_bounds_rejected_before_state_change[stale_window-2592001-Stale window too long] PASSED [ 17%]
+tests/test_adversarial.py::test_create_job_rejects_malformed_worker[not-an-address-Worker must be a valid address] PASSED [ 19%]
+tests/test_adversarial.py::test_create_job_rejects_malformed_worker[0x123-Worker must be a valid address] PASSED [ 21%]
+tests/test_adversarial.py::test_create_job_rejects_malformed_worker[0x0000000000000000000000000000000000000000-Worker must not be the zero address] PASSED [ 23%]
+tests/test_adversarial.py::test_create_job_rejects_worker_equal_to_employer PASSED [ 26%]
+tests/test_adversarial.py::test_stale_window_floor_blocks_instant_drain PASSED [ 28%]
+tests/test_adversarial.py::test_evidence_body_injection_is_wrapped_and_not_obeyed PASSED [ 30%]
+tests/test_adversarial.py::test_evidence_body_is_length_capped PASSED    [ 32%]
+tests/test_adversarial.py::test_evidence_angle_bracket_breakout_is_stripped PASSED [ 34%]
+tests/test_adversarial.py::test_stable_cid_is_not_flagged PASSED         [ 36%]
+tests/test_adversarial.py::test_same_cid_different_bytes_is_caught PASSED [ 39%]
+tests/test_adversarial.py::test_odd_amount_end_to_end_integer_math PASSED [ 41%]
+tests/test_adversarial.py::test_unresolvable_releases_reservation_and_frees_slot PASSED [ 43%]
+tests/test_guards.py::test_sanitize_strips_angle_brackets PASSED         [ 45%]
+tests/test_guards.py::test_sanitize_truncates PASSED                     [ 47%]
+tests/test_guards.py::test_clean_text_removes_tags_and_scripts PASSED    [ 50%]
+tests/test_guards.py::test_content_addressed_url_requires_canonical_ipfs_cid PASSED [ 52%]
+tests/test_guards.py::test_ceil_div_is_integer_ceiling PASSED            [ 54%]
+tests/test_guards.py::test_max_liability_uses_integer_atto_math_and_rounds_up PASSED [ 56%]
+tests/test_guards.py::test_canonical_result_accepts_dict PASSED          [ 58%]
+tests/test_guards.py::test_canonical_result_accepts_wrapped_string PASSED [ 60%]
+tests/test_guards.py::test_canonical_result_rejects_noncanonical_or_broken PASSED [ 63%]
+tests/test_regression.py::test_hours_cap PASSED                          [ 65%]
+tests/test_regression.py::test_budget_guard PASSED                       [ 67%]
+tests/test_regression.py::test_dead_url_rejected_at_submission PASSED    [ 69%]
+tests/test_regression.py::test_mutation_detected_mismatch PASSED         [ 71%]
+tests/test_regression.py::test_injection_in_rubric_is_contained_not_obeyed PASSED [ 73%]
+tests/test_regression.py::test_substring_tier_not_accepted PASSED        [ 76%]
+tests/test_regression.py::test_validator_disagreement_is_rejected PASSED [ 78%]
+tests/test_regression.py::test_happy_path_medium_then_finalize_payout PASSED [ 80%]
+tests/test_regression.py::test_reserved_liability_recovery_then_funded_finalize PASSED [ 82%]
+tests/test_regression.py::test_stale_dismissal_full_recovery PASSED      [ 84%]
+tests/test_reserved_appeal.py::test_steward_recover_during_appeal_window_then_high_appeal[LOW] PASSED [ 86%]
+tests/test_reserved_appeal.py::test_steward_recover_during_appeal_window_then_high_appeal[MEDIUM] PASSED [ 89%]
+tests/test_reserved_appeal.py::test_steward_recover_during_appeal_window_then_high_appeal[UNVERIFIABLE] PASSED [ 91%]
+tests/test_reserved_appeal.py::test_appeal_window_elapsed_releases_to_exact_pay PASSED [ 93%]
+tests/test_reserved_appeal.py::test_appeal_used_and_final_ruling_reserves_exact_pay PASSED [ 95%]
+tests/test_reserved_appeal.py::test_multiple_periods_mixed_states_sum_is_protected PASSED [ 97%]
+tests/test_reserved_appeal.py::test_appeal_boundary_single_shared_predicate PASSED [100%]
+============================== 46 passed in 0.71s ==============================

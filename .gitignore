@@ -1,0 +1,16 @@
+# secrets — never commit
+.env
+.env.*
+*.key
+keystore*.json
+
+# python / virtualenv
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# test / tooling caches
+.pytest_cache/
+.gltest_cache/
+artifacts/
