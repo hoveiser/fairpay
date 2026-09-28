@@ -19,4 +19,8 @@ jobs:
         # bundle so Direct Mode tests run without a cache-dependent shortcut.
         run: bash scripts/setup_direct_test_cache.sh contracts/contract.py
       - name: Run regression harness
-        run: pytest tests/ -v
+        run: |
+          pytest tests/ -v --junitxml=tests.xml
+          passed=$(python -c "import xml.etree.ElementTree as E;t=E.parse('tests.xml').getroot().find('testsuite');print(int(t.get('tests'))-int(t.get('errors'))-int(t.get('failures')))")
+          total=$(python -c "import xml.etree.ElementTree as E;print(E.parse('tests.xml').getroot().find('testsuite').get('tests'))")
+          echo "Direct Mode + unit result: $passed/$total passed" | tee -a "$GITHUB_STEP_SUMMARY"
