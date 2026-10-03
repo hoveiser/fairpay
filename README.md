@@ -1,3 +1,5 @@
+<img src="./assets/logo.png" alt="FairPay logo" width="120" />
+
 # 💰 FairPay - v0.4.1
 
 **AI-audited payroll with quality-tiered payouts, reserved-liability recovery, and sealed evidence on GenLayer**

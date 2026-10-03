@@ -3,6 +3,7 @@ import GatewayValidator from "./components/GatewayValidator.jsx";
 import LiabilityCalculator from "./components/LiabilityCalculator.jsx";
 import LiveStatus from "./components/LiveStatus.jsx";
 import { CONTRACT_ADDRESS } from "./rpc.mjs";
+import logo from "./assets/fairpay-icon.svg";
 
 const REPO = "https://github.com/hoveiser/fairpay";
 const EXPLORER = `https://explorer-studio.genlayer.com/address/${CONTRACT_ADDRESS}`;
@@ -13,9 +14,13 @@ export default function App() {
       <header className="mb-8">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-gl-orange to-gl-violet text-lg font-black text-black shadow-lg">
-              F
-            </div>
+            <img
+              src={logo}
+              alt="FairPay logo"
+              width={44}
+              height={44}
+              className="h-11 w-11 rounded-xl shadow-lg ring-1 ring-white/10"
+            />
             <div>
               <h1 className="text-2xl font-extrabold tracking-tight text-white">
                 FairPay
@@ -49,6 +54,10 @@ export default function App() {
       </main>
 
       <footer className="mt-10 border-t border-white/5 pt-5 text-xs text-slate-500">
+        <div className="mb-3 flex items-center gap-2">
+          <img src={logo} alt="FairPay logo" width={22} height={22} className="h-6 w-6 rounded-md ring-1 ring-white/10" />
+          <span className="font-semibold text-slate-300">FairPay v0.4.1</span>
+        </div>
         <div className="flex flex-wrap items-center justify-between gap-2">
           <span>
             Contract <code className="font-mono text-slate-400">{CONTRACT_ADDRESS}</code> on StudioNet (chain id 61999)

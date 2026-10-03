@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="assets/fairpay-icon.svg" />
     <title>FairPay v0.4.1 - AI-Audited Payroll on GenLayer</title>
     <meta
       name="description"
@@ -40,9 +41,8 @@
       .wrap { max-width: 980px; margin: 0 auto; padding: 48px 20px 72px; }
       header { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
       .logo {
-        width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center;
-        font-weight: 800; font-size: 22px; color: #000;
-        background: linear-gradient(135deg, var(--orange), var(--violet));
+        width: 46px; height: 46px; border-radius: 12px; display: block;
+        object-fit: cover; border: 1px solid var(--edge);
       }
       h1 { font-size: 28px; margin: 0; letter-spacing: -0.02em; }
       .badge {
@@ -80,7 +80,7 @@
   <body>
     <div class="wrap">
       <header>
-        <div class="logo">F</div>
+        <img class="logo" src="assets/logo.png" alt="FairPay logo" width="46" height="46" />
         <div>
           <h1>FairPay<span class="badge">v0.4.1</span></h1>
           <div class="sub">AI-audited payroll on GenLayer StudioNet</div>
