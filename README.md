@@ -22,6 +22,46 @@ A decentralized payroll system where workers submit evidence of their work, AI v
 >
 > **On-chain steward scenario status (COMPLETE):** the full steward loop now runs end to end on StudioNet. `submit_period` sealed on the `gateway.pinata.cloud` allowlist entry; the LLM audit returned **LOW** on the first round and stayed **LOW** after the appeal (weak evidence, as expected), recovery inside the open appeal window left the budget at the 5 GEN max-reachable reserve, the appeal was accepted, and `finalize` paid the worker 3 GEN funded with no "Job budget insufficient". Every step is captured under `evidence/` and re-verified against the explorer JSON API by `scripts/verify_transactions.py` (11/11 FINALIZED with the expected method and execution result). See *v0.4.1 on-chain run* below for the transaction hashes and invariants.
 
+## 🖥 Interactive Frontend (v0.4.1)
+
+The old static landing page is replaced by a real single-page app under `frontend/`
+(Vite + React + Tailwind, GenLayer orange/purple theme). It is fully interactive and
+demonstrates the two v0.4.x fixes live:
+
+1. **Gateway Validator** - type any evidence URL and get real-time ACCEPT/REVERT
+   feedback. It runs the *exact* v0.4.1 gate (`_is_content_addressed_url`: the same
+   two anchored regexes and the 500-char cap), and shows a step-by-step reason for
+   every rejection (lookalike host, userinfo, port, `http://`, extra path segment,
+   query/fragment, bad CID). Preset buttons replay the attack cases.
+2. **Reserved-Liability Calculator** - drag Hours and Rate and pick a settled tier;
+   two animated bars compare the on-chain reserve (`hours × rate × 1.25`, rounded up)
+   against the actual payout, with the protected headroom, proving a live appeal
+   window can never be defunded.
+3. **Live StudioNet Contract State** - reads `contract_balance()`, `get_job(id)` and
+   `reserved_liability(id)` straight from `0xb16d9670A39e9eF22641312c1bFDE5E4e9673AF4`
+   over JSON-RPC `gen_call`. The request payloads are built and the responses decoded
+   in-browser with a genbase codec (`frontend/src/genbase.mjs`) that is verified
+   byte-for-byte against the Python SDK, so the numbers are the real on-chain state.
+
+**Run locally:**
+
+```bash
+cd frontend
+npm install
+npm run dev        # http://127.0.0.1:5173
+```
+
+**Deployed:** `.github/workflows/deploy-frontend.yml` builds `frontend/dist` and
+publishes it to GitHub Pages at https://hoveiser.github.io/fairpay/ (enable *Settings
+→ Pages → Source: GitHub Actions* once; the base path is relative so it works under the
+project sub-path).
+
+**Demo video (48s, burned-in captions):** [`media/fairpay_ui_demo.mp4`](media/fairpay_ui_demo.mp4)
+records the browser (not a terminal): real-time gateway validation, the `ipfs.io.evil.com`
+lookalike rejection, the reserved-liability bars, and the live on-chain read. It is captured
+reproducibly with `node frontend/capture.mjs video` (headless Chrome via puppeteer-core +
+ffmpeg). Poster frame: [`media/fairpay_ui_demo_poster.png`](media/fairpay_ui_demo_poster.png).
+
 ## 📝 Changes from v0.4.0 to v0.4.1
 
 ### Steward Feedback ("the contract is effectively unusable on chain today")
@@ -168,7 +208,7 @@ v0.4.1 is deployed on StudioNet through `genlayer-py` (the CLI keystore is locke
 
 - Contract: `0xb16d9670A39e9eF22641312c1bFDE5E4e9673AF4`
 - Deploy tx (FINALIZED): `0x3fa27a52f1e5faf3dce7f3bbc18038bfbd45700598dc4d3fb140d23d10c3dd4b`
-- Stored source byte-matches `contracts/contract.py` (20745 bytes, verified via `gen_getContractCode`; raw proof in `evidence/deploy.json` and `evidence/stored_source.bin`). Reproduce: `./scripts/deploy_studionet.py`, then `./scripts/verify_transactions.py`.
+- Stored source byte-matches `contracts/contract.py` (20745 bytes, verified via `gen_getContractCode`; raw proof in `evidence/deploy.json` and `evidence/stored_source.bin`). Re-verify the live match any time with `./scripts/verify_deployment.py` (read-only, no key needed); deploy with `./scripts/deploy_studionet.py`, then re-verify txs with `./scripts/verify_transactions.py`.
 
 ### v0.4.1 on-chain run (steward scenario, complete)
 
@@ -214,12 +254,16 @@ The full loop (create_job through finalize) is reproducible with `./.venv/bin/py
 - `tests/test_adversarial.py` - PART B adversarial audit suite
 - `tests/test_gateways.py` - v0.4.1 multi-gateway evidence (each allowed gateway, attack URLs rejected before state change, gateway-independent seal, cross-gateway different-bytes caught)
 - `.github/workflows/regression.yml` - CI configuration
+- `.github/workflows/deploy-frontend.yml` - builds `frontend/` and publishes it to GitHub Pages
 - `scripts/setup_direct_test_cache.sh` - seeds the Direct Mode runner cache so CI is not cache-dependent
 - `scripts/deploy_studionet.py` - deploys v0.4.1 to StudioNet via genlayer-py, resolves the address, byte-matches the source
+- `scripts/verify_deployment.py` - re-checks the deployed source byte-matches `contracts/contract.py` via `gen_getContractCode` (no key needed)
 - `scripts/run_steward_scenario.py` - live StudioNet steward scenario runner (gateway probe, invariants, balances, reserved_liability)
 - `scripts/verify_transactions.py` - verifies each StudioNet tx against the explorer JSON API
 - `evidence/` - raw deploy/scenario/gateway-probe/verification records (never paraphrased)
-- `index.html` - static project landing page (v0.4.1); not part of the contract or CI
+- `frontend/` - interactive SPA (Vite + React + Tailwind): gateway validator, reserved-liability calculator, live `gen_call` status; `capture.mjs` records the demo video
+- `media/` - 48s interactive-UI demo video (`fairpay_ui_demo.mp4`) with burned-in captions + poster frame
+- `index.html` - lightweight project landing page linking to the live app, video, and evidence; not part of the contract or CI
 - `README.md` - this documentation
 
 ## ⚠️ Threat Model

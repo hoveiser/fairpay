@@ -1,0 +1,10 @@
+{
+  "contract_address": "0xb16d9670A39e9eF22641312c1bFDE5E4e9673AF4",
+  "explorer": "https://explorer-studio.genlayer.com/address/0xb16d9670A39e9eF22641312c1bFDE5E4e9673AF4",
+  "network": "studionet (chain id 61999)",
+  "local_bytes": 20745,
+  "stored_bytes": 20745,
+  "byte_match": true,
+  "rpc_method": "gen_getContractCode",
+  "rpc_endpoint": "https://studio.genlayer.com/api"
+}
