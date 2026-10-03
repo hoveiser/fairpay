@@ -58,7 +58,14 @@ publishes it to GitHub Pages at https://hoveiser.github.io/fairpay/ (enable *Set
 → Pages → Source: GitHub Actions* once; the base path is relative so it works under the
 project sub-path).
 
-**Demo video (48s, burned-in captions):** [`media/fairpay_ui_demo.mp4`](media/fairpay_ui_demo.mp4)
+**Demo video with educational subtitles (75s, 1920x1080, burned-in captions):**
+[`media/fairpay_demo_v2.mp4`](media/fairpay_demo_v2.mp4) walks through each v0.4.1 fix with
+full-sentence captions that explain the feature, the benefit, and the technical detail
+(multi-gateway allowlist, strict anchored URL validation, the `ipfs.io.evil.com` lookalike
+rejection, content-derived integrity, reserved liability, and dynamic budget protection).
+Built reproducibly with `python scripts/build_fairpay_video_v2.py` (ffmpeg + libass).
+
+**Raw UI capture (48s, 1280x720):** [`media/fairpay_ui_demo.mp4`](media/fairpay_ui_demo.mp4)
 records the browser (not a terminal): real-time gateway validation, the `ipfs.io.evil.com`
 lookalike rejection, the reserved-liability bars, and the live on-chain read. It is captured
 reproducibly with `node frontend/capture.mjs video` (headless Chrome via puppeteer-core +
@@ -264,7 +271,7 @@ The full loop (create_job through finalize) is reproducible with `./.venv/bin/py
 - `scripts/verify_transactions.py` - verifies each StudioNet tx against the explorer JSON API
 - `evidence/` - raw deploy/scenario/gateway-probe/verification records (never paraphrased)
 - `frontend/` - interactive SPA (Vite + React + Tailwind): gateway validator, reserved-liability calculator, live `gen_call` status; `capture.mjs` records the demo video
-- `media/` - 48s interactive-UI demo video (`fairpay_ui_demo.mp4`) with burned-in captions + poster frame
+- `media/` - 75s educational-caption demo (`fairpay_demo_v2.mp4`), 48s raw UI capture (`fairpay_ui_demo.mp4`) + poster frame
 - `index.html` - lightweight project landing page linking to the live app, video, and evidence; not part of the contract or CI
 - `README.md` - this documentation
 
