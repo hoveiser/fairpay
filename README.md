@@ -66,14 +66,23 @@ it to GitHub Pages at https://hoveiser.github.io/fairpay/.
 - Direct Mode suite: **180 passing tests** (`pytest tests/ -q`), covering the PAPITO lock, mutual co-sign, all four bands, fail-closed parsing, prompt injection, URL allowlisting, access control, receipts, and the vault invariant.
 - **Four-way sha256 identity:** `c243cc5ffbc6243c0da2de45a696f49691280918afa7e222e90ed0c182a07425` for the local LF file, the git blob at the deployed commit, the raw GitHub blob, and `gen_getContractCode` on StudioNet. Raw proof in [`docs/evidence.md`](docs/evidence.md) and `evidence/studionet_deployment.json`.
 
-### Live StudioNet proof
+### Live StudioNet proof (deployed commit `552ea90`)
 
-The scenario is re-run against the current deployment. The exact audit band, the
-three guard reverts, the mutual and appeal settlements, the transfer, the vault
-invariant, and the four-way sha256 are generated in
-[`docs/evidence.md`](docs/evidence.md) after the run. Raw explorer receipts are
-under `evidence/milestone_txs/` and the machine-readable summary is
-`evidence/milestone_scenario.json`.
+| Check | Result |
+| --- | --- |
+| Live audit | `FULL_BONUS_PAYOUT`, anchor 100, 80 GEN payout, `MAJORITY_AGREE` |
+| Guard revert: premature surplus | `Appeal window open: liability locked` |
+| Guard revert: co-sign mismatch | `Co-sign bps mismatch` |
+| Guard revert: post-settlement mutation | `Agreement already settled` |
+| Mutual co-sign at 7000 bps | 21 GEN payout + 9 GEN refund |
+| Appeal resolution | anchor 100, bond forfeited, final payout 80 GEN |
+| `transfer_tokens` | exact 1 GEN move |
+| Vault invariant | holds |
+| Guard reverts matched | 3 of 3 |
+
+Transaction hashes for every row are in [`docs/evidence.md`](docs/evidence.md). The raw
+explorer receipts are under `evidence/milestone_txs/` and the machine-readable
+summary is `evidence/milestone_scenario.json`.
 
 ## Reproduce the deployment
 

@@ -1,0 +1,67 @@
+{
+  "network": "studionet (chain id 61999)",
+  "contract_address": "0x7E0895f9100DCf02306ed9d56D63B28105f172a9",
+  "deploy_txid": "0x9d3ac0a2a581dda1986fafb60717b6a29dc14f70066177edaf2189b860959770",
+  "deployed_commit": "552ea90b49f55e446134954d4fc7731adfa615e2",
+  "explorer": "https://explorer-studio.genlayer.com/address/0x7E0895f9100DCf02306ed9d56D63B28105f172a9",
+  "local_file": "contracts/contract.py",
+  "local_bytes": 37560,
+  "local_sha256": "c243cc5ffbc6243c0da2de45a696f49691280918afa7e222e90ed0c182a07425",
+  "git_blob_sha256": "c243cc5ffbc6243c0da2de45a696f49691280918afa7e222e90ed0c182a07425",
+  "remote_github_sha256": "c243cc5ffbc6243c0da2de45a696f49691280918afa7e222e90ed0c182a07425",
+  "onchain_sha256": "c243cc5ffbc6243c0da2de45a696f49691280918afa7e222e90ed0c182a07425",
+  "onchain_bytes": 37560,
+  "four_way_match": true,
+  "source_byte_match": true,
+  "test_count": 180,
+  "lint": "passed",
+  "scenario_all_checks_passed": true,
+  "scenario_guard_reverts": 3,
+  "scenario_audit": {
+    "ok": true,
+    "payroll_band": "FULL_BONUS_PAYOUT",
+    "delivery_anchor": 100,
+    "evidence_authenticated": true,
+    "delivery_score": 90,
+    "worker_payout": "80000000000000000000",
+    "consensus": {
+      "status": "MAJORITY_AGREE",
+      "agree": 3,
+      "total": 5,
+      "nondet_disagree": null
+    },
+    "finalized": true
+  },
+  "scenario_settlement": {
+    "status": "SETTLED",
+    "receipt": {
+      "receipt_id": 3,
+      "agreement_id": 1,
+      "kind": "AUDITED",
+      "worker": "0xFa6F53CcC39969f057708D2E34e993999ed30309",
+      "employer": "0x3de43AA2f7162c80af98abe78222aE0Cdf83c506",
+      "worker_payout": "80000000000000000000",
+      "employer_refund": "0",
+      "payroll_band": "FULL_BONUS_PAYOUT",
+      "delivery_anchor": 100,
+      "mutual_bps": 0,
+      "bonds_refunded": "0",
+      "bonds_forfeited": "2000000000000000000",
+      "settled_at": 1792563367
+    },
+    "worker_fpt_before": 42000000000000000000,
+    "worker_fpt_after": 122000000000000000000,
+    "delta": 80000000000000000000
+  },
+  "scenario_vault_state": {
+    "vault_custody_balance": "0",
+    "locked_payroll_escrows": "0",
+    "active_appeal_bonds": "0",
+    "invariant_holds": true,
+    "total_fpt_supply": "200000000000000000000",
+    "native_backing": "200000000000000000000",
+    "native_backed": true,
+    "agreement_count": 3
+  },
+  "generated_at": "2026-10-21T06:17:58.244667Z"
+}
