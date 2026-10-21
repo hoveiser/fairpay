@@ -25,7 +25,7 @@
         "node_config": {
           "stake": 100,
           "address": "0x6737ca1d6BDF8b7C4f19143E2D55581Ca64eb7C3",
-          "private_key": "0x57a873d382f5caeef5f6e6f7782136061544f3db562fcc71237f061690eace2d",
+          "private_key": "<redacted>",
           "primary_model": {
             "model": "policy:prd-qwen",
             "config": {
@@ -259,7 +259,7 @@
           "plugin": "openai-compatible",
           "address": "0xDB1c35c1f05d885999b8f13e5735307BcC16Be88",
           "provider": "openrouter",
-          "private_key": "0x0e27c92b7fd9ece8237521c5fe49fbaca17dd1b9e6feffd5b43e3a3fe7d5d555",
+          "private_key": "<redacted>",
           "plugin_config": {
             "api_url": "https://openrouter.ai/api",
             "api_key_env_var": "OPENROUTERAPIKEY"
@@ -305,7 +305,7 @@
           "plugin": "openai-compatible",
           "address": "0x14402D49f317CE1a2F35BAE01b1804A2A9703dCb",
           "provider": "openrouter",
-          "private_key": "0xd29a683b3d79e1b1f6550bd4e27c9cd4b86fc7c83fdb04f6f5d8943e3a1fce0f",
+          "private_key": "<redacted>",
           "plugin_config": {
             "api_url": "https://openrouter.ai/api",
             "api_key_env_var": "OPENROUTERAPIKEY"
@@ -340,7 +340,7 @@
         "node_config": {
           "stake": 100,
           "address": "0xcE1d6bBB36B744536153966B4DD42276f5ADd0F8",
-          "private_key": "0xa5896b443580d04656bcf9a9b470b44c10c86e22fc8d8cc95e5d40ef84fe7395",
+          "private_key": "<redacted>",
           "primary_model": {
             "model": "policy:prd-sonnet",
             "config": {
@@ -568,7 +568,7 @@
         "node_config": {
           "stake": 100,
           "address": "0x4404Fb70d490c935758146f42A73DC850FF95C71",
-          "private_key": "0x72f55c3c64eda18250e44964622a1be2d6088a77246cba77251153e2ce3606b7",
+          "private_key": "<redacted>",
           "primary_model": {
             "model": "policy:prd-gemma",
             "config": {
@@ -791,7 +791,7 @@
         "node_config": {
           "stake": 100,
           "address": "0x4404Fb70d490c935758146f42A73DC850FF95C71",
-          "private_key": "0x72f55c3c64eda18250e44964622a1be2d6088a77246cba77251153e2ce3606b7",
+          "private_key": "<redacted>",
           "primary_model": {
             "model": "policy:prd-gemma",
             "config": {
@@ -1110,7 +1110,7 @@
             "node_config": {
               "stake": 100,
               "address": "0x4404Fb70d490c935758146f42A73DC850FF95C71",
-              "private_key": "0x72f55c3c64eda18250e44964622a1be2d6088a77246cba77251153e2ce3606b7",
+              "private_key": "<redacted>",
               "primary_model": {
                 "model": "policy:prd-gemma",
                 "config": {
@@ -1333,7 +1333,7 @@
             "node_config": {
               "stake": 100,
               "address": "0x4404Fb70d490c935758146f42A73DC850FF95C71",
-              "private_key": "0x72f55c3c64eda18250e44964622a1be2d6088a77246cba77251153e2ce3606b7",
+              "private_key": "<redacted>",
               "primary_model": {
                 "model": "policy:prd-gemma",
                 "config": {
@@ -1566,7 +1566,7 @@
             "node_config": {
               "stake": 100,
               "address": "0x6737ca1d6BDF8b7C4f19143E2D55581Ca64eb7C3",
-              "private_key": "0x57a873d382f5caeef5f6e6f7782136061544f3db562fcc71237f061690eace2d",
+              "private_key": "<redacted>",
               "primary_model": {
                 "model": "policy:prd-qwen",
                 "config": {
@@ -1800,7 +1800,7 @@
               "plugin": "openai-compatible",
               "address": "0xDB1c35c1f05d885999b8f13e5735307BcC16Be88",
               "provider": "openrouter",
-              "private_key": "0x0e27c92b7fd9ece8237521c5fe49fbaca17dd1b9e6feffd5b43e3a3fe7d5d555",
+              "private_key": "<redacted>",
               "plugin_config": {
                 "api_url": "https://openrouter.ai/api",
                 "api_key_env_var": "OPENROUTERAPIKEY"
@@ -1846,7 +1846,7 @@
               "plugin": "openai-compatible",
               "address": "0x14402D49f317CE1a2F35BAE01b1804A2A9703dCb",
               "provider": "openrouter",
-              "private_key": "0xd29a683b3d79e1b1f6550bd4e27c9cd4b86fc7c83fdb04f6f5d8943e3a1fce0f",
+              "private_key": "<redacted>",
               "plugin_config": {
                 "api_url": "https://openrouter.ai/api",
                 "api_key_env_var": "OPENROUTERAPIKEY"
@@ -1881,7 +1881,7 @@
             "node_config": {
               "stake": 100,
               "address": "0xcE1d6bBB36B744536153966B4DD42276f5ADd0F8",
-              "private_key": "0xa5896b443580d04656bcf9a9b470b44c10c86e22fc8d8cc95e5d40ef84fe7395",
+              "private_key": "<redacted>",
               "primary_model": {
                 "model": "policy:prd-sonnet",
                 "config": {

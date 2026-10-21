@@ -25,7 +25,7 @@
         "node_config": {
           "stake": 100,
           "address": "0x03D58A4DeF6fDFc032A56374785a5F571D07Bc11",
-          "private_key": "0x7b5ea5c1b3f0df60e1986c2250f5d48841e4dd55dc4f43194705fb497a722600",
+          "private_key": "<redacted>",
           "primary_model": {
             "model": "google/gemini-3-flash-preview",
             "config": {
@@ -263,7 +263,7 @@
         "node_config": {
           "stake": 100,
           "address": "0x90402341F0B0e97b23023c0a87de957FB7148E0F",
-          "private_key": "0x999a2d4d80dc34f4fc5a8ac0a583ac5a407faf815cacb440d8a90163656e050e",
+          "private_key": "<redacted>",
           "primary_model": {
             "model": "policy:prd-gemini",
             "config": {
@@ -501,7 +501,7 @@
         "node_config": {
           "stake": 100,
           "address": "0x5310dcF075E0BD47d29B8ec6581F736C767f54D2",
-          "private_key": "0x5327a6e71bec4e8e5a2b826a3725e996d3e4a095f8ffe63e9a8c8084e2e495b6",
+          "private_key": "<redacted>",
           "primary_model": {
             "model": "policy:prd-kimi",
             "config": {
@@ -737,7 +737,7 @@
         "node_config": {
           "stake": 100,
           "address": "0x4aba638Cf0Cf5249437AaD968fC69dde46ae6BAC",
-          "private_key": "0xf965fb0ed7ce582a916d2acb00e6c0e4530d81bce70a43334d20f4b9a7c860ba",
+          "private_key": "<redacted>",
           "primary_model": {
             "model": "policy:prd-gpt-oss",
             "config": {
@@ -978,7 +978,7 @@
         "node_config": {
           "stake": 100,
           "address": "0xacc2459F341D7a887bcA8FAA62F1EC9378d4Bc67",
-          "private_key": "0x9aa529cf5ef902c7be2e324e7f004f7e097614bd6e35179a7c546f657de0edec",
+          "private_key": "<redacted>",
           "primary_model": {
             "model": "policy:prd-sonnet",
             "config": {
@@ -1214,7 +1214,7 @@
         "node_config": {
           "stake": 100,
           "address": "0xacc2459F341D7a887bcA8FAA62F1EC9378d4Bc67",
-          "private_key": "0x9aa529cf5ef902c7be2e324e7f004f7e097614bd6e35179a7c546f657de0edec",
+          "private_key": "<redacted>",
           "primary_model": {
             "model": "policy:prd-sonnet",
             "config": {
@@ -1554,7 +1554,7 @@
             "node_config": {
               "stake": 100,
               "address": "0xacc2459F341D7a887bcA8FAA62F1EC9378d4Bc67",
-              "private_key": "0x9aa529cf5ef902c7be2e324e7f004f7e097614bd6e35179a7c546f657de0edec",
+              "private_key": "<redacted>",
               "primary_model": {
                 "model": "policy:prd-sonnet",
                 "config": {
@@ -1790,7 +1790,7 @@
             "node_config": {
               "stake": 100,
               "address": "0xacc2459F341D7a887bcA8FAA62F1EC9378d4Bc67",
-              "private_key": "0x9aa529cf5ef902c7be2e324e7f004f7e097614bd6e35179a7c546f657de0edec",
+              "private_key": "<redacted>",
               "primary_model": {
                 "model": "policy:prd-sonnet",
                 "config": {
@@ -2036,7 +2036,7 @@
             "node_config": {
               "stake": 100,
               "address": "0x03D58A4DeF6fDFc032A56374785a5F571D07Bc11",
-              "private_key": "0x7b5ea5c1b3f0df60e1986c2250f5d48841e4dd55dc4f43194705fb497a722600",
+              "private_key": "<redacted>",
               "primary_model": {
                 "model": "google/gemini-3-flash-preview",
                 "config": {
@@ -2274,7 +2274,7 @@
             "node_config": {
               "stake": 100,
               "address": "0x90402341F0B0e97b23023c0a87de957FB7148E0F",
-              "private_key": "0x999a2d4d80dc34f4fc5a8ac0a583ac5a407faf815cacb440d8a90163656e050e",
+              "private_key": "<redacted>",
               "primary_model": {
                 "model": "policy:prd-gemini",
                 "config": {
@@ -2512,7 +2512,7 @@
             "node_config": {
               "stake": 100,
               "address": "0x5310dcF075E0BD47d29B8ec6581F736C767f54D2",
-              "private_key": "0x5327a6e71bec4e8e5a2b826a3725e996d3e4a095f8ffe63e9a8c8084e2e495b6",
+              "private_key": "<redacted>",
               "primary_model": {
                 "model": "policy:prd-kimi",
                 "config": {
@@ -2748,7 +2748,7 @@
             "node_config": {
               "stake": 100,
               "address": "0x4aba638Cf0Cf5249437AaD968fC69dde46ae6BAC",
-              "private_key": "0xf965fb0ed7ce582a916d2acb00e6c0e4530d81bce70a43334d20f4b9a7c860ba",
+              "private_key": "<redacted>",
               "primary_model": {
                 "model": "policy:prd-gpt-oss",
                 "config": {

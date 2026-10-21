@@ -180,7 +180,7 @@
           "plugin": "openai-compatible",
           "address": "0x4aba638Cf0Cf5249437AaD968fC69dde46ae6BAC",
           "provider": "llm-router",
-          "private_key": "0xf965fb0ed7ce582a916d2acb00e6c0e4530d81bce70a43334d20f4b9a7c860ba",
+          "private_key": "<redacted>",
           "plugin_config": {
             "api_url": "https://router.ygr.ai",
             "api_key_env_var": "LLM_ROUTER_API_KEY"
@@ -370,7 +370,7 @@
           "plugin": "openai-compatible",
           "address": "0x4EDbE1FC9EAeC7b0EBA849b0C76AE73Eb0ad5C47",
           "provider": "llm-router",
-          "private_key": "0xf7097e4def08c1fb1d3f4c944efecc389ae5b57579b3fe2e26864c14e46f709a",
+          "private_key": "<redacted>",
           "plugin_config": {
             "api_url": "https://router.ygr.ai",
             "api_key_env_var": "LLM_ROUTER_API_KEY"
@@ -405,7 +405,7 @@
         "node_config": {
           "stake": 100,
           "address": "0x90402341F0B0e97b23023c0a87de957FB7148E0F",
-          "private_key": "0x999a2d4d80dc34f4fc5a8ac0a583ac5a407faf815cacb440d8a90163656e050e",
+          "private_key": "<redacted>",
           "primary_model": {
             "model": "policy:prd-gemini",
             "config": {
@@ -628,7 +628,7 @@
         "node_config": {
           "stake": 100,
           "address": "0x3E5ee2507cc167C9925Bf10c67D7986581112024",
-          "private_key": "0x2a3db5aeda0a1260c2e3ac516fb77c4a76b7caf2d23d78087fec3bd23c9cc199",
+          "private_key": "<redacted>",
           "primary_model": {
             "model": "policy:prd-gemini",
             "config": {
@@ -856,7 +856,7 @@
         "node_config": {
           "stake": 100,
           "address": "0xacc2459F341D7a887bcA8FAA62F1EC9378d4Bc67",
-          "private_key": "0x9aa529cf5ef902c7be2e324e7f004f7e097614bd6e35179a7c546f657de0edec",
+          "private_key": "<redacted>",
           "primary_model": {
             "model": "policy:prd-sonnet",
             "config": {
@@ -1079,7 +1079,7 @@
         "node_config": {
           "stake": 100,
           "address": "0xacc2459F341D7a887bcA8FAA62F1EC9378d4Bc67",
-          "private_key": "0x9aa529cf5ef902c7be2e324e7f004f7e097614bd6e35179a7c546f657de0edec",
+          "private_key": "<redacted>",
           "primary_model": {
             "model": "policy:prd-sonnet",
             "config": {
@@ -1398,7 +1398,7 @@
             "node_config": {
               "stake": 100,
               "address": "0xacc2459F341D7a887bcA8FAA62F1EC9378d4Bc67",
-              "private_key": "0x9aa529cf5ef902c7be2e324e7f004f7e097614bd6e35179a7c546f657de0edec",
+              "private_key": "<redacted>",
               "primary_model": {
                 "model": "policy:prd-sonnet",
                 "config": {
@@ -1621,7 +1621,7 @@
             "node_config": {
               "stake": 100,
               "address": "0xacc2459F341D7a887bcA8FAA62F1EC9378d4Bc67",
-              "private_key": "0x9aa529cf5ef902c7be2e324e7f004f7e097614bd6e35179a7c546f657de0edec",
+              "private_key": "<redacted>",
               "primary_model": {
                 "model": "policy:prd-sonnet",
                 "config": {
@@ -2009,7 +2009,7 @@
               "plugin": "openai-compatible",
               "address": "0x4aba638Cf0Cf5249437AaD968fC69dde46ae6BAC",
               "provider": "llm-router",
-              "private_key": "0xf965fb0ed7ce582a916d2acb00e6c0e4530d81bce70a43334d20f4b9a7c860ba",
+              "private_key": "<redacted>",
               "plugin_config": {
                 "api_url": "https://router.ygr.ai",
                 "api_key_env_var": "LLM_ROUTER_API_KEY"
@@ -2199,7 +2199,7 @@
               "plugin": "openai-compatible",
               "address": "0x4EDbE1FC9EAeC7b0EBA849b0C76AE73Eb0ad5C47",
               "provider": "llm-router",
-              "private_key": "0xf7097e4def08c1fb1d3f4c944efecc389ae5b57579b3fe2e26864c14e46f709a",
+              "private_key": "<redacted>",
               "plugin_config": {
                 "api_url": "https://router.ygr.ai",
                 "api_key_env_var": "LLM_ROUTER_API_KEY"
@@ -2234,7 +2234,7 @@
             "node_config": {
               "stake": 100,
               "address": "0x90402341F0B0e97b23023c0a87de957FB7148E0F",
-              "private_key": "0x999a2d4d80dc34f4fc5a8ac0a583ac5a407faf815cacb440d8a90163656e050e",
+              "private_key": "<redacted>",
               "primary_model": {
                 "model": "policy:prd-gemini",
                 "config": {
@@ -2457,7 +2457,7 @@
             "node_config": {
               "stake": 100,
               "address": "0x3E5ee2507cc167C9925Bf10c67D7986581112024",
-              "private_key": "0x2a3db5aeda0a1260c2e3ac516fb77c4a76b7caf2d23d78087fec3bd23c9cc199",
+              "private_key": "<redacted>",
               "primary_model": {
                 "model": "policy:prd-gemini",
                 "config": {

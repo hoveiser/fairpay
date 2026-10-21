@@ -25,7 +25,7 @@
         "node_config": {
           "stake": 100,
           "address": "0x14402D49f317CE1a2F35BAE01b1804A2A9703dCb",
-          "private_key": "0xd29a683b3d79e1b1f6550bd4e27c9cd4b86fc7c83fdb04f6f5d8943e3a1fce0f",
+          "private_key": "<redacted>",
           "primary_model": {
             "model": "anthropic/claude-sonnet-4.6",
             "config": {
@@ -403,7 +403,7 @@
           "plugin": "openai-compatible",
           "address": "0x36728d2a123aB444E603EE5b2ad17d18Bb193557",
           "provider": "llm-router",
-          "private_key": "0x4c92d2077a44fb0330ce78047f891886a832b8259e40655bbf4505f587832498",
+          "private_key": "<redacted>",
           "plugin_config": {
             "api_url": "https://router.ygr.ai",
             "api_key_env_var": "LLM_ROUTER_API_KEY"
@@ -438,7 +438,7 @@
         "node_config": {
           "stake": 100,
           "address": "0xcE1d6bBB36B744536153966B4DD42276f5ADd0F8",
-          "private_key": "0xa5896b443580d04656bcf9a9b470b44c10c86e22fc8d8cc95e5d40ef84fe7395",
+          "private_key": "<redacted>",
           "primary_model": {
             "model": "policy:prd-sonnet",
             "config": {
@@ -816,7 +816,7 @@
           "plugin": "openai-compatible",
           "address": "0x90402341F0B0e97b23023c0a87de957FB7148E0F",
           "provider": "llm-router",
-          "private_key": "0x999a2d4d80dc34f4fc5a8ac0a583ac5a407faf815cacb440d8a90163656e050e",
+          "private_key": "<redacted>",
           "plugin_config": {
             "api_url": "https://router.ygr.ai",
             "api_key_env_var": "LLM_ROUTER_API_KEY"
@@ -856,7 +856,7 @@
         "node_config": {
           "stake": 100,
           "address": "0xE6BD8050758CB15fC88387223E31Ae2708B119dC",
-          "private_key": "0x204d80bbf9737126a7f87439846f9bd143f755f3c6a0f3055f561b3ad22db458",
+          "private_key": "<redacted>",
           "primary_model": {
             "model": "policy:prd-minimax",
             "config": {
@@ -1079,7 +1079,7 @@
         "node_config": {
           "stake": 100,
           "address": "0xE6BD8050758CB15fC88387223E31Ae2708B119dC",
-          "private_key": "0x204d80bbf9737126a7f87439846f9bd143f755f3c6a0f3055f561b3ad22db458",
+          "private_key": "<redacted>",
           "primary_model": {
             "model": "policy:prd-minimax",
             "config": {
@@ -1398,7 +1398,7 @@
             "node_config": {
               "stake": 100,
               "address": "0xE6BD8050758CB15fC88387223E31Ae2708B119dC",
-              "private_key": "0x204d80bbf9737126a7f87439846f9bd143f755f3c6a0f3055f561b3ad22db458",
+              "private_key": "<redacted>",
               "primary_model": {
                 "model": "policy:prd-minimax",
                 "config": {
@@ -1621,7 +1621,7 @@
             "node_config": {
               "stake": 100,
               "address": "0xE6BD8050758CB15fC88387223E31Ae2708B119dC",
-              "private_key": "0x204d80bbf9737126a7f87439846f9bd143f755f3c6a0f3055f561b3ad22db458",
+              "private_key": "<redacted>",
               "primary_model": {
                 "model": "policy:prd-minimax",
                 "config": {
@@ -1854,7 +1854,7 @@
             "node_config": {
               "stake": 100,
               "address": "0x14402D49f317CE1a2F35BAE01b1804A2A9703dCb",
-              "private_key": "0xd29a683b3d79e1b1f6550bd4e27c9cd4b86fc7c83fdb04f6f5d8943e3a1fce0f",
+              "private_key": "<redacted>",
               "primary_model": {
                 "model": "anthropic/claude-sonnet-4.6",
                 "config": {
@@ -2232,7 +2232,7 @@
               "plugin": "openai-compatible",
               "address": "0x36728d2a123aB444E603EE5b2ad17d18Bb193557",
               "provider": "llm-router",
-              "private_key": "0x4c92d2077a44fb0330ce78047f891886a832b8259e40655bbf4505f587832498",
+              "private_key": "<redacted>",
               "plugin_config": {
                 "api_url": "https://router.ygr.ai",
                 "api_key_env_var": "LLM_ROUTER_API_KEY"
@@ -2267,7 +2267,7 @@
             "node_config": {
               "stake": 100,
               "address": "0xcE1d6bBB36B744536153966B4DD42276f5ADd0F8",
-              "private_key": "0xa5896b443580d04656bcf9a9b470b44c10c86e22fc8d8cc95e5d40ef84fe7395",
+              "private_key": "<redacted>",
               "primary_model": {
                 "model": "policy:prd-sonnet",
                 "config": {
@@ -2645,7 +2645,7 @@
               "plugin": "openai-compatible",
               "address": "0x90402341F0B0e97b23023c0a87de957FB7148E0F",
               "provider": "llm-router",
-              "private_key": "0x999a2d4d80dc34f4fc5a8ac0a583ac5a407faf815cacb440d8a90163656e050e",
+              "private_key": "<redacted>",
               "plugin_config": {
                 "api_url": "https://router.ygr.ai",
                 "api_key_env_var": "LLM_ROUTER_API_KEY"

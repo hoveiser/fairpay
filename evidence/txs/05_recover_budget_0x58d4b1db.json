@@ -25,7 +25,7 @@
         "node_config": {
           "stake": 100,
           "address": "0x5310dcF075E0BD47d29B8ec6581F736C767f54D2",
-          "private_key": "0x5327a6e71bec4e8e5a2b826a3725e996d3e4a095f8ffe63e9a8c8084e2e495b6",
+          "private_key": "<redacted>",
           "primary_model": {
             "model": "policy:prd-kimi",
             "config": {
@@ -257,7 +257,7 @@
         "node_config": {
           "stake": 100,
           "address": "0x3D83ab507785b95ca5C208bEc80CCe3D5ca98100",
-          "private_key": "0x94f95dc1fec6a3263d09ab432475882dded8258c13f0293594e434a9978de0c0",
+          "private_key": "<redacted>",
           "primary_model": {
             "model": "policy:prd-gpt-5-4",
             "config": {
@@ -489,7 +489,7 @@
         "node_config": {
           "stake": 100,
           "address": "0xcE1d6bBB36B744536153966B4DD42276f5ADd0F8",
-          "private_key": "0xa5896b443580d04656bcf9a9b470b44c10c86e22fc8d8cc95e5d40ef84fe7395",
+          "private_key": "<redacted>",
           "primary_model": {
             "model": "policy:prd-sonnet",
             "config": {
@@ -721,7 +721,7 @@
         "node_config": {
           "stake": 100,
           "address": "0xec2Fb79cd12255Eb34886CEd7332f27B98DEe658",
-          "private_key": "0xc430630827251cfb8751e58b7c30fc351d4014cd65b19c77a323db68fad90aa3",
+          "private_key": "<redacted>",
           "primary_model": {
             "model": "policy:prd-deepseek",
             "config": {
@@ -956,7 +956,7 @@
         "node_config": {
           "stake": 100,
           "address": "0x76c25AFC12c75485703cCFfd0083AA6201455B25",
-          "private_key": "0xb75adcf98d6a7b7b4a357d3463685ee40fd2043f2c0a43bdcbb0e603e18ac67a",
+          "private_key": "<redacted>",
           "primary_model": {
             "model": "policy:prd-mistral",
             "config": {
@@ -1188,7 +1188,7 @@
         "node_config": {
           "stake": 100,
           "address": "0x76c25AFC12c75485703cCFfd0083AA6201455B25",
-          "private_key": "0xb75adcf98d6a7b7b4a357d3463685ee40fd2043f2c0a43bdcbb0e603e18ac67a",
+          "private_key": "<redacted>",
           "primary_model": {
             "model": "policy:prd-mistral",
             "config": {
@@ -1522,7 +1522,7 @@
             "node_config": {
               "stake": 100,
               "address": "0x76c25AFC12c75485703cCFfd0083AA6201455B25",
-              "private_key": "0xb75adcf98d6a7b7b4a357d3463685ee40fd2043f2c0a43bdcbb0e603e18ac67a",
+              "private_key": "<redacted>",
               "primary_model": {
                 "model": "policy:prd-mistral",
                 "config": {
@@ -1754,7 +1754,7 @@
             "node_config": {
               "stake": 100,
               "address": "0x76c25AFC12c75485703cCFfd0083AA6201455B25",
-              "private_key": "0xb75adcf98d6a7b7b4a357d3463685ee40fd2043f2c0a43bdcbb0e603e18ac67a",
+              "private_key": "<redacted>",
               "primary_model": {
                 "model": "policy:prd-mistral",
                 "config": {
@@ -1996,7 +1996,7 @@
             "node_config": {
               "stake": 100,
               "address": "0x5310dcF075E0BD47d29B8ec6581F736C767f54D2",
-              "private_key": "0x5327a6e71bec4e8e5a2b826a3725e996d3e4a095f8ffe63e9a8c8084e2e495b6",
+              "private_key": "<redacted>",
               "primary_model": {
                 "model": "policy:prd-kimi",
                 "config": {
@@ -2228,7 +2228,7 @@
             "node_config": {
               "stake": 100,
               "address": "0x3D83ab507785b95ca5C208bEc80CCe3D5ca98100",
-              "private_key": "0x94f95dc1fec6a3263d09ab432475882dded8258c13f0293594e434a9978de0c0",
+              "private_key": "<redacted>",
               "primary_model": {
                 "model": "policy:prd-gpt-5-4",
                 "config": {
@@ -2460,7 +2460,7 @@
             "node_config": {
               "stake": 100,
               "address": "0xcE1d6bBB36B744536153966B4DD42276f5ADd0F8",
-              "private_key": "0xa5896b443580d04656bcf9a9b470b44c10c86e22fc8d8cc95e5d40ef84fe7395",
+              "private_key": "<redacted>",
               "primary_model": {
                 "model": "policy:prd-sonnet",
                 "config": {
@@ -2692,7 +2692,7 @@
             "node_config": {
               "stake": 100,
               "address": "0xec2Fb79cd12255Eb34886CEd7332f27B98DEe658",
-              "private_key": "0xc430630827251cfb8751e58b7c30fc351d4014cd65b19c77a323db68fad90aa3",
+              "private_key": "<redacted>",
               "primary_model": {
                 "model": "policy:prd-deepseek",
                 "config": {
