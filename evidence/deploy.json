@@ -1,7 +1,7 @@
 {
   "network": "studionet (chain id 61999)",
   "employer": "0x3de43AA2f7162c80af98abe78222aE0Cdf83c506",
-  "deploy_txid": "0x3fa27a52f1e5faf3dce7f3bbc18038bfbd45700598dc4d3fb140d23d10c3dd4b",
-  "contract_address": "0xb16d9670A39e9eF22641312c1bFDE5E4e9673AF4",
+  "deploy_txid": "0xc976eb0b8511a0deb4028a6f63b64ea10f60115ae727b6486525470edce5dbed",
+  "contract_address": "0x56565F5Cf8eDF85ed5a82cA340Af9Ce0FBFF0E0a",
   "source_byte_match": true
 }

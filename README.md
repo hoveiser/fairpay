@@ -1,75 +1,85 @@
 <img src="./assets/logo.png" alt="FairPay logo" width="120" />
 
-# 💰 FairPay - v0.4.1
+# FairPay - Milestone v1
 
-**AI-audited payroll with quality-tiered payouts, reserved-liability recovery, and sealed evidence on GenLayer**
+**Funded FPT payroll vault, PAPITO maximum-liability lock, two-party mutual settlement, and discrete consensus band audit on GenLayer**
 
-A decentralized payroll system where workers submit evidence of their work, AI validators audit quality against an agreed rubric, and payments are automatically calculated by tier (HIGH 1.25× / MEDIUM 1.0× / LOW 0.75× / UNVERIFIABLE 0×).
+Milestone v1 replaces the v0.4.x budget-reservation model with real token custody and
+three new settlement primitives. The contract locks the full maximum liability before
+any work starts, never lets an employer withdraw unearned surplus while a submission,
+audit, or appeal is live, and settles only through a two-party co-sign or a live
+consensus band that validators must agree on exactly.
 
-## 📋 Contract Details
+## Contract details
 
 - **Network:** GenLayer StudioNet (`studio.genlayer.com`, chain id 61999, gasless)
-- **Current Version:** v0.4.1
-- **Deployed Address (v0.4.1, LIVE):** `0xb16d9670A39e9eF22641312c1bFDE5E4e9673AF4`
-  - Deploy tx (FINALIZED): [`0x3fa27a52f1e5faf3dce7f3bbc18038bfbd45700598dc4d3fb140d23d10c3dd4b`](https://explorer-studio.genlayer.com/tx/0x3fa27a52f1e5faf3dce7f3bbc18038bfbd45700598dc4d3fb140d23d10c3dd4b)
-  - Source on the explorer matches `contracts/contract.py` byte for byte (20745 bytes, first line `# v0.4.1`); raw proof in `evidence/deploy.json` and `evidence/stored_source.bin`.
-  - **v0.4.1 Explorer:** [address page](https://explorer-studio.genlayer.com/address/0xb16d9670A39e9eF22641312c1bFDE5E4e9673AF4)
-- **Historical Address (v0.4.0):** `0x89D31CB0CEe1465023782D7F89d9244f8Fc830CF` ([v0.4.0 txs](https://explorer-studio.genlayer.com/address/0x89D31CB0CEe1465023782D7F89d9244f8Fc830CF)) - superseded by v0.4.1; the single-gateway `ipfs.io` evidence path became unreachable by validators (HTTP 429), see *Changes from v0.4.0 to v0.4.1*.
-- **Historical Address (v0.3.0):** `0xf1C916eCeA8a26563D8DAfff99Fa15C4f46Bf523` ([v0.3.0 txs used in the reference matrix below](https://explorer-studio.genlayer.com/address/0xf1C916eCeA8a26563D8DAfff99Fa15C4f46Bf523))
+- **Version:** Milestone v1 (contract source 37,578 bytes)
+- **Live address:** `0x56565F5Cf8eDF85ed5a82cA340Af9Ce0FBFF0E0a`
+  - Deploy tx (FINALIZED): [`0xc976eb0b8511a0deb4028a6f63b64ea10f60115ae727b6486525470edce5dbed`](https://explorer-studio.genlayer.com/tx/0xc976eb0b8511a0deb4028a6f63b64ea10f60115ae727b6486525470edce5dbed)
+  - Stored source matches `contracts/contract.py` byte for byte (37,578 bytes); raw proof in `evidence/deploy.json`, `evidence/stored_source.bin`, and `evidence/studionet_deployment.json`.
+  - **Explorer:** [address page](https://explorer-studio.genlayer.com/address/0x56565F5Cf8eDF85ed5a82cA340Af9Ce0FBFF0E0a)
+- **Frontend:** https://hoveiser.github.io/fairpay/
+- **Demo video:** [`docs/demo-video-subtitled.mp4`](docs/demo-video-subtitled.mp4) and [`frontend/public/demo-video-subtitled.mp4`](frontend/public/demo-video-subtitled.mp4) (48s, 1280x720, H.264 + AAC stereo)
+- **Evidence:** [`docs/evidence.md`](docs/evidence.md) and `evidence/studionet_deployment.json`
 - **Source:** https://github.com/hoveiser/fairpay
 
-> **Network correction:** earlier README copy labelled the v0.3.0 deployment "Testnet Bradbury (LIVE)". That was wrong: that address lives on **StudioNet** (`explorer-studio.genlayer.com`). All explorer links in this file are StudioNet links.
->
-> **v0.4.1 deployment status (DONE):** v0.4.1 is deployed and live on StudioNet at `0xb16d9670A39e9eF22641312c1bFDE5E4e9673AF4`, deployed through `genlayer-py` with the signing key from the gitignored `.env` (the CLI keystore is locked in this environment; the key is never printed, logged, or committed). The deploy transaction is FINALIZED and its stored source byte-matches `contracts/contract.py` (20745 bytes).
->
-> **On-chain steward scenario status (COMPLETE):** the full steward loop now runs end to end on StudioNet. `submit_period` sealed on the `gateway.pinata.cloud` allowlist entry; the LLM audit returned **LOW** on the first round and stayed **LOW** after the appeal (weak evidence, as expected), recovery inside the open appeal window left the budget at the 5 GEN max-reachable reserve, the appeal was accepted, and `finalize` paid the worker 3 GEN funded with no "Job budget insufficient". Every step is captured under `evidence/` and re-verified against the explorer JSON API by `scripts/verify_transactions.py` (11/11 FINALIZED with the expected method and execution result). See *v0.4.1 on-chain run* below for the transaction hashes and invariants.
+## What is new in Milestone v1
 
-## 🖥 Interactive Frontend (v0.4.1)
+1. **Funded FPT custody vault.** `faucet_or_deposit` mints FPT 1:1 against native GEN backing, `transfer_tokens` moves FPT between accounts, and every agreement moves its full maximum liability from the employer balance into `vault_custody_balance` at creation. Settlements write an immutable `SettlementReceipt` with the payout, refund, band, anchor, and bond outcome.
+2. **PAPITO maximum-liability lock.** `max_liability = base_pay + overtime_or_bonus_cap`. One hundred percent stays locked through work submission, the initial live audit, and the entire appeal window. `recover_employer_surplus` reverts with `Appeal window open: liability locked` or `Appeal pending: liability locked` until every tranche is final. `check_vault_invariants()` proves `vault_custody_balance == sum(locked_payroll_escrows) + sum(active_appeal_bonds)`.
+3. **Two-party mutual settlement co-signing.** `propose_mutual_payroll_settlement` requires the employer and worker to sign the exact same `worker_payout_bps`. A single signature only records a proposal and moves zero funds. A mismatch reverts with `Co-sign bps mismatch`. Matching signatures settle immediately, and payout plus refund equal the full maximum liability.
+4. **Milestone tranches and consensus band audit.** The worker submits a tranche with a sanitized timesheet and commit-pinned evidence. The live audit snapshots storage into locals before the non-det block, renders evidence with `gl.nondet.web.render`, and calls `gl.eq_principle.prompt_comparative`. `_compute_payroll_settlement` quantizes delivery onto the discrete 0, 50, 80, 100 ladder and returns `FULL_BONUS_PAYOUT`, `STANDARD_TARGET_PAYOUT`, `PARTIAL_PRORATED_PAYOUT`, or `REJECTED_NON_DELIVERY`. Validators must agree exactly on `payroll_band`, `delivery_anchor`, and `evidence_authenticated`, and the contract re-verifies all three deterministically. Malformed or injected JSON fails closed to zero.
+5. **No owner, admin, or employer scoring override.** There is no owner storage field and no deterministic scoring, audit, or unilateral override method. The live audit and settlement are permissionless; only the worker can submit or appeal, only the employer can recover its own surplus, and only a party can co-sign.
 
-The old static landing page is replaced by a real single-page app under `frontend/`
-(Vite + React + Tailwind, GenLayer orange/purple theme). It is fully interactive and
-demonstrates the two v0.4.x fixes live:
+## Interactive frontend
 
-1. **Gateway Validator** - type any evidence URL and get real-time ACCEPT/REVERT
-   feedback. It runs the *exact* v0.4.1 gate (`_is_content_addressed_url`: the same
-   two anchored regexes and the 500-char cap), and shows a step-by-step reason for
-   every rejection (lookalike host, userinfo, port, `http://`, extra path segment,
-   query/fragment, bad CID). Preset buttons replay the attack cases.
-2. **Reserved-Liability Calculator** - drag Hours and Rate and pick a settled tier;
-   two animated bars compare the on-chain reserve (`hours × rate × 1.25`, rounded up)
-   against the actual payout, with the protected headroom, proving a live appeal
-   window can never be defunded.
-3. **Live StudioNet Contract State** - reads `contract_balance()`, `get_job(id)` and
-   `reserved_liability(id)` straight from `0xb16d9670A39e9eF22641312c1bFDE5E4e9673AF4`
-   over JSON-RPC `gen_call`. The request payloads are built and the responses decoded
-   in-browser with a genbase codec (`frontend/src/genbase.mjs`) that is verified
-   byte-for-byte against the Python SDK, so the numbers are the real on-chain state.
+The single-page app under `frontend/` is React + TypeScript + Vite + TailwindCSS with
+`lucide-react`, `canvas-confetti`, and `genlayer-js`. It has three Milestone v1 modules:
+
+1. **What-if payroll, overtime and appeal simulator.** Sliders for base pay, bonus cap, appeal bond, and the consensus anchor (0, 50, 80, 100) show the live band, the locked maximum liability during the opening window, and the exact worker and employer split.
+2. **Two-party mutual co-sign and appeal timeline.** A visual stepper from OPEN to SUBMITTED to AUDITED (appeal window locked) to APPEALED or CO-SIGNED to SETTLED, with the PAPITO lock and the employer recovery guard at every step.
+3. **Consensus and prompt inspector plus security guard lab.** A drawer with the exact sanitized prompt and validator principle, the three consensus fields, the anchor ladder, and one-click deterministic replays of the premature surplus clawback, single-party co-sign, and post-settlement mutation guards.
+
+The page also includes a Web Audio UI synthesizer (`sound.ts` with a mute toggle), a
+one-click burner identity and a MetaMask connector with an employer/worker role
+switch, a crisp 512x512 logo at `frontend/public/logo.png` and `docs/logo.png`, and a
+live contract panel that reads `get_vault_state`, `check_vault_invariants`,
+`get_agreement_count`, `get_agreement`, and `get_tranche` in four to five `gen_call`
+requests with no polling. No hand-typed ABI override is passed to `readContract`.
 
 **Run locally:**
 
 ```bash
 cd frontend
 npm install
+npm run typecheck
+npm run build
 npm run dev        # http://127.0.0.1:5173
 ```
 
-**Deployed:** `.github/workflows/deploy-frontend.yml` builds `frontend/dist` and
-publishes it to GitHub Pages at https://hoveiser.github.io/fairpay/ (enable *Settings
-→ Pages → Source: GitHub Actions* once; the base path is relative so it works under the
-project sub-path).
+**Deploy:** `.github/workflows/deploy-frontend.yml` builds `frontend/dist` and publishes
+it to GitHub Pages at https://hoveiser.github.io/fairpay/.
 
-**Demo video (75s, 1920x1080, real UI + educational subtitles):** [`media/fairpay_demo_v3.mp4`](media/fairpay_demo_v3.mp4)
-records the live browser UI in action (the gateway validator rejecting `ipfs.io.evil.com` with a red
-REVERTED verdict, the reserved-liability bars, and the real `gen_call` reads) under full-sentence lower-third
-captions that explain the feature, the benefit, and the technical detail of each v0.4.1 fix. The captions sit in
-a lower third and never cover the control being described. Built reproducibly with `node frontend/capture_v3.mjs`
-(clean 1080p capture, no captions) then `python scripts/build_fairpay_video_v3.py` (ffmpeg + libass overlay).
+## Verification
 
-**Text-only narration (75s, 1920x1080):** [`media/fairpay_demo_v2.mp4`](media/fairpay_demo_v2.mp4) - the same
-educational caption script on a clean background, built with `python scripts/build_fairpay_video_v2.py`.
+- `genvm-lint check contracts/contract.py`: lint and validation passed, 19 public methods (9 view, 10 write).
+- Direct Mode suite: **179 passing tests** (`pytest tests/ -q`), covering the PAPITO lock, mutual co-sign, all four bands, fail-closed parsing, prompt injection, URL allowlisting, access control, receipts, and the vault invariant.
+- Live StudioNet scenario: written by `scripts/run_milestone_scenario.py`, with raw explorer receipts under `evidence/milestone_txs/` and the summary in `evidence/milestone_scenario.json`. The exact audit band, guard reverts, receipts, and four-way sha256 identity are in [`docs/evidence.md`](docs/evidence.md).
+- Contract source identity: local LF file, git blob, raw GitHub blob, and `gen_getContractCode` all share one sha256. See `evidence/studionet_deployment.json`.
 
-**Raw UI capture (48s, 1280x720):** [`media/fairpay_ui_demo.mp4`](media/fairpay_ui_demo.mp4) - earlier browser
-capture with brief labels; poster frame [`media/fairpay_ui_demo_poster.png`](media/fairpay_ui_demo_poster.png).
+## Reproduce the deployment
+
+```bash
+python -m venv .venv && . .venv/bin/activate
+pip install -r requirements.txt
+genvm-lint check contracts/contract.py
+pytest tests/ -q
+python scripts/deploy_studionet.py
+python scripts/run_milestone_scenario.py <deployed-commit>
+python scripts/build_deployment_evidence.py <deployed-commit>
+```
+
+## Previous releases (v0.4.x)
 
 ## 📝 Changes from v0.4.0 to v0.4.1
 

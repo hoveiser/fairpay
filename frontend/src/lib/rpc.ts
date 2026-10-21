@@ -4,8 +4,8 @@ import { studionet } from "genlayer-js/chains";
 // The address is replaced with the Milestone v1 deployment after
 // scripts/deploy_studionet.py completes. CONTRACT_READY gates live reads so the
 // page stays honest before that address exists.
-export const CONTRACT_ADDRESS = "0xb16d9670A39e9eF22641312c1bFDE5E4e9673AF4";
-export const CONTRACT_READY = false;
+export const CONTRACT_ADDRESS = "0x56565F5Cf8eDF85ed5a82cA340Af9Ce0FBFF0E0a";
+export const CONTRACT_READY = true;
 
 const client = createClient({ chain: studionet });
 

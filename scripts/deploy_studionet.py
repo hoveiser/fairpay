@@ -30,6 +30,21 @@ EXPLORER = "https://explorer-studio.genlayer.com"
 import urllib.request
 
 
+def redact(value):
+    """Remove validator keys from explorer records before they touch disk."""
+    if isinstance(value, dict):
+        out = {}
+        for key, item in value.items():
+            if "private_key" in str(key).lower() or "secret" in str(key).lower():
+                out[key] = "<redacted>"
+            else:
+                out[key] = redact(item)
+        return out
+    if isinstance(value, list):
+        return [redact(item) for item in value]
+    return value
+
+
 def explorer_finalized_by_account(address: str, tx_hash: str, timeout_s: int = 600) -> dict:
     """Deploys are not served by the single-transaction explorer route, so poll
     the account transaction list until the deploy shows FINALIZED, then return
@@ -73,26 +88,54 @@ def main() -> int:
     # explorer route on StudioNet, so resolve the FINALIZED deploy record (and
     # the created contract) from the account transaction list on the explorer.
     tx = explorer_finalized_by_account(employer.address, deploy_txid)
-    (EVIDENCE / "deploy_explorer_tx.json").write_text(json.dumps(tx, indent=2))
+    (EVIDENCE / "deploy_explorer_tx.json").write_text(json.dumps(redact(tx), indent=2))
     contract = (tx.get("data") or {}).get("contract_address") or tx.get("to_address")
     print("deploy tx status:", tx.get("status"))
     print("resolved contract address:", contract)
+    receipts = ((tx.get("consensus_data") or {}).get("leader_receipt") or [])
+    exec_result = receipts[0].get("execution_result") if receipts else None
+    print("deploy execution result:", exec_result)
+    if str(exec_result).upper() != "SUCCESS":
+        print("deploy was rejected by the network; inspect evidence/deploy_explorer_tx.json")
+        return 5
     if not contract:
         print("could not resolve contract address; inspect evidence/deploy_explorer_tx.json")
         return 3
 
     # Byte-match: fetch stored source over RPC gen_getContractCode and compare.
+    # The RPC indexer can lag the explorer by a few seconds, so retry before
+    # declaring the read failed.
     import base64
+    import time
     payload = json.dumps(
         {"jsonrpc": "2.0", "id": 1, "method": "gen_getContractCode", "params": [contract]}
     ).encode()
-    req = urllib.request.Request(
-        "https://studio.genlayer.com/api",
-        data=payload,
-        headers={"Content-Type": "application/json", "User-Agent": "qoder-agent"},
-    )
-    with urllib.request.urlopen(req, timeout=60) as r:
-        stored_b64 = json.load(r)["result"]
+    stored_b64 = None
+    last_error = None
+    for _attempt in range(20):
+        req = urllib.request.Request(
+            "https://studio.genlayer.com/api",
+            data=payload,
+            headers={"Content-Type": "application/json", "User-Agent": "qoder-agent"},
+        )
+        with urllib.request.urlopen(req, timeout=60) as r:
+            response = json.load(r)
+        if "result" in response:
+            stored_b64 = response["result"]
+            break
+        last_error = response.get("error")
+        time.sleep(3)
+    if stored_b64 is None:
+        print("gen_getContractCode did not return code yet:", str(last_error)[:200])
+        (EVIDENCE / "deploy.json").write_text(json.dumps({
+            "network": "studionet (chain id 61999)",
+            "employer": employer.address,
+            "deploy_txid": deploy_txid,
+            "contract_address": contract,
+            "source_byte_match": False,
+            "code_read_error": str(last_error)[:300],
+        }, indent=2))
+        return 4
     stored_bytes = base64.b64decode(stored_b64)
     (EVIDENCE / "stored_source.bin").write_bytes(stored_bytes)
     match = stored_bytes == source_bytes

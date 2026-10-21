@@ -1,0 +1,101 @@
+FairPay Milestone v1 - Release Note and Verification Checklist
+
+Contract: 0x56565F5Cf8eDF85ed5a82cA340Af9Ce0FBFF0E0a
+Network: GenLayer StudioNet, chain id 61999
+Deploy transaction: 0xc976eb0b8511a0deb4028a6f63b64ea10f60115ae727b6486525470edce5dbed
+Source size: 37578 bytes, byte-identical to contracts/contract.py
+Explorer: https://explorer-studio.genlayer.com/address/0x56565F5Cf8eDF85ed5a82cA340Af9Ce0FBFF0E0a
+
+Summary
+
+Milestone v1 replaces the v0.4.1 budget reservation model with a real funded
+FPT payroll vault and three new settlement primitives.
+
+1. Funded FPT custody vault
+
+The contract keeps a real token ledger. faucet_or_deposit mints FPT one to one
+against native GEN backing. transfer_tokens moves FPT between accounts. Every
+payroll agreement moves its full maximum liability from the employer balance
+into vault_custody_balance at creation, so work is never submitted against an
+unfunded promise. Settlements write an immutable SettlementReceipt with the
+worker payout, employer refund, payroll band, delivery anchor, and bond outcome.
+
+2. PAPITO maximum liability lock
+
+For every agreement, max_liability equals base_pay plus overtime_or_bonus_cap.
+One hundred percent of that amount stays in vault custody through work
+submission, the initial live audit, and the entire appeal window. The employer
+cannot withdraw unearned surplus while a tranche is submitted, audited inside
+its appeal window, or under appeal. recover_employer_surplus reverts with
+"Appeal window open: liability locked" or "Appeal pending: liability locked"
+until every tranche is final. The vault invariant is:
+
+vault_custody_balance == sum(locked_payroll_escrows) + sum(active_appeal_bonds)
+
+3. Two-party mutual settlement co-signing
+
+propose_mutual_payroll_settlement accepts the exact same worker_payout_bps from
+both the employer and the worker. A single signature only records a proposal
+and moves zero funds. A mismatched second signature reverts with "Co-sign bps
+mismatch". When both signatures match, the worker payout plus the employer
+refund equal the full maximum liability, so one hundred percent of the escrow
+is conserved.
+
+4. Milestone tranche and consensus band audit
+
+The worker submits a tranche with a sanitized timesheet and commit-pinned
+evidence URL. The live audit snapshots every storage field into plain Python
+locals before the non-det block, renders the evidence with
+gl.nondet.web.render, and calls gl.eq_principle.prompt_comparative. The shared
+helper _compute_payroll_settlement quantizes verified delivery onto the
+discrete 0, 50, 80, 100 anchor ladder and returns one of four payroll bands:
+FULL_BONUS_PAYOUT, STANDARD_TARGET_PAYOUT, PARTIAL_PRORATED_PAYOUT, or
+REJECTED_NON_DELIVERY. Validators must agree exactly on payroll_band,
+delivery_anchor, and evidence_authenticated. The contract then re-verifies the
+anchor, the band, the authenticity flag, and the payout deterministically.
+Malformed or prompt-injected JSON fails closed to anchor 0 and no payout.
+
+Verification checklist
+
+- genvm-lint check contracts/contract.py: lint and validation passed, 19 public
+  methods (9 view, 10 write).
+- Direct Mode suite: 179 passing tests.
+- PAPITO regression: employer surplus withdrawal reverts while the appeal
+  window is open and while an appeal is pending; recovery succeeds only after
+  finality and never below the final worker payout.
+- Mutual co-sign: single-party call does not settle and does not change the
+  vault; matching employer and worker signatures settle; payout plus refund
+  equals max liability; mismatched bps reverts.
+- Band audit: all four discrete bands, score quantization at 0, 24, 25, 64,
+  65, 89, 90, and 100, unauthenticated evidence forced to zero, malformed JSON
+  fail-closed, prose-wrapped JSON accepted, and exact validator agreement
+  replay.
+- Vault invariant: checked after creation, submission, audit, appeal,
+  resolution, surplus recovery, settlement, and mutual settlement, and across
+  multiple agreements in mixed states.
+- Evidence URL allowlist: four immutable IPFS gateways plus commit-pinned raw
+  GitHub files, rejecting lookalike hosts, userinfo, ports, http, query,
+  fragment, traversal, and branch-name URLs.
+- Access control: no owner or admin storage field, no employer scoring or
+  audit override, permissionless live audit and settlement, worker-only
+  submission and appeal, employer-only surplus recovery, party-only co-sign.
+
+Reproduction
+
+  genvm-lint check contracts/contract.py
+  pytest tests/ -q
+  python scripts/deploy_studionet.py
+  python scripts/run_milestone_scenario.py <deployed-commit>
+  python scripts/build_deployment_evidence.py <deployed-commit>
+
+Evidence files
+
+- evidence/deploy.json
+- evidence/studionet_deployment.json
+- evidence/milestone_scenario.json
+- evidence/milestone_txs/
+- docs/evidence.md
+
+The contract contains no owner, admin, or employer-only scoring path. The
+live audit is permissionless and its result is produced only by validator
+consensus.
