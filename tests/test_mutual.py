@@ -198,3 +198,27 @@ def test_mutual_parties_can_be_the_same_order_reversed(funded, direct_alice, dir
     assert receipt["worker_payout"] == str(32 * GEN)
     assert receipt["employer_refund"] == str(48 * GEN)
     assert c.invariant() is True
+
+
+def test_mutual_blocked_while_appeal_pending(funded, direct_alice, direct_bob):
+    c = funded
+    aid = c.create(direct_alice, direct_bob)
+    c.mock_evidence()
+    c.mock_audit(True, 50)
+    c.submit(direct_bob, aid)
+    c.audit(aid)
+    c.appeal(direct_bob, aid)
+    with pytest.raises(Exception, match="Appeal pending"):
+        c.mutual(direct_alice, aid, 5000)
+    # The bond is still held and the invariant is intact.
+    assert c.vault_state()["active_appeal_bonds"] == str(BOND)
+    assert c.invariant() is True
+    # After the live appeal resolution the bond is released and mutual settlement
+    # becomes available again.
+    c.mock_audit(True, 80)
+    c.resolve_appeal(aid)
+    c.mutual(direct_alice, aid, 5000)
+    c.mutual(direct_bob, aid, 5000)
+    assert c.agreement(aid)["status"] == "SETTLED"
+    assert c.vault_state()["vault_custody_balance"] == "0"
+    assert c.invariant() is True

@@ -51,7 +51,7 @@ def test_invalid_urls_are_rejected(funded, direct_alice, direct_bob, url):
     c = funded
     aid = c.create(direct_alice, direct_bob)
     c.mock_evidence(pattern=r".*")
-    with pytest.raises(Exception, match="Evidence URL must be immutable"):
+    with pytest.raises(Exception, match="URL not allowed"):
         c.submit(direct_bob, aid, urls=[url])
 
 
@@ -71,5 +71,5 @@ def test_non_string_url_is_rejected(funded, direct_alice, direct_bob):
     aid = c.create(direct_alice, direct_bob)
     c.mock_evidence(pattern=r".*")
     c.vm.sender = direct_bob
-    with pytest.raises(Exception, match="Evidence URL must be immutable"):
+    with pytest.raises(Exception, match="URL not allowed"):
         c.c.submit_tranche(aid, 0, 40, "work", '[123]')

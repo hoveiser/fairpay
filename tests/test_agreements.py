@@ -197,7 +197,7 @@ def test_submit_rejects_bad_urls(funded, direct_alice, direct_bob, urls):
     c = funded
     aid = c.create(direct_alice, direct_bob)
     c.mock_evidence()
-    with pytest.raises(Exception, match="Evidence URL must"):
+    with pytest.raises(Exception, match="URL not allowed"):
         c.submit(direct_bob, aid, urls=urls)
 
 

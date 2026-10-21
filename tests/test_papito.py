@@ -1,6 +1,6 @@
 import pytest
 
-from conftest import BOND, GEN, MAX_LIABILITY
+from conftest import BOND, GEN, MAX_LIABILITY, WINDOW
 
 
 def _audited(c, employer, worker, score=80):
@@ -119,11 +119,17 @@ def test_recover_after_settlement_is_rejected(funded, direct_alice, direct_bob):
         c.recover(direct_alice, aid)
 
 
-def test_recover_before_any_tranche_is_blocked(funded, direct_alice, direct_bob):
+def test_recover_unstarted_agreement_waits_for_start_window(funded, direct_alice, direct_bob):
     c = funded
     aid = c.create(direct_alice, direct_bob)
-    with pytest.raises(Exception, match="All tranches must be final"):
+    with pytest.raises(Exception, match="Start window open"):
         c.recover(direct_alice, aid)
+    c.add_time(WINDOW + 1)
+    recovered = c.recover(direct_alice, aid)
+    assert recovered == MAX_LIABILITY
+    assert c.agreement(aid)["status"] == "SETTLED"
+    assert c.vault_state()["vault_custody_balance"] == "0"
+    assert c.invariant() is True
 
 
 def test_recovery_then_settlement_pays_only_the_worker(funded, direct_alice, direct_bob):

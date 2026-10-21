@@ -168,16 +168,17 @@ def test_hash_mismatch_is_a_final_zero(funded, direct_alice, direct_bob):
     assert tranche["worker_payout"] == "0"
 
 
-def test_unreachable_evidence_reverts_and_allows_retry(funded, direct_alice, direct_bob):
+def test_unreachable_evidence_fails_closed(funded, direct_alice, direct_bob):
     c = funded
     aid = c.create(direct_alice, direct_bob)
     c.mock_evidence()
     c.submit(direct_bob, aid)
     c.mock_evidence(body="")
-    with pytest.raises(Exception, match="Evidence unreachable"):
-        c.audit(aid)
-    assert c.tranche(aid)["status"] == "submitted"
-    # The gateway heals and the same tranche can be audited.
-    c.mock_evidence()
-    c.mock_audit(True, 80)
-    assert c.audit(aid) == 80
+    assert c.audit(aid) == 0
+    tranche = c.tranche(aid)
+    assert tranche["status"] == "audited"
+    assert tranche["payroll_band"] == BAND_REJECTED
+    assert tranche["evidence_authenticated"] is False
+    assert tranche["worker_payout"] == "0"
+    assert tranche["outcome"] == "UNREACHABLE"
+    assert c.invariant() is True

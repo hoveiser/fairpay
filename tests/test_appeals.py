@@ -150,16 +150,19 @@ def test_resolve_is_permissionless(funded, direct_alice, direct_bob, direct_char
     assert c.tranche(aid)["appeal_resolved"] is True
 
 
-def test_resolve_unreachable_reverts_and_keeps_the_bond(funded, direct_alice, direct_bob):
+def test_resolve_unreachable_fails_closed_and_forfeits_bond(funded, direct_alice, direct_bob):
     c = funded
     aid = _audited(c, direct_alice, direct_bob)
     c.appeal(direct_bob, aid)
     c.mock_evidence(body="")
-    with pytest.raises(Exception, match="Evidence unreachable at appeal audit time"):
-        c.resolve_appeal(aid)
-    assert c.tranche(aid)["status"] == "appealed"
-    assert c.tranche(aid)["appeal_bond_posted"] == str(BOND)
-    assert c.vault_state()["active_appeal_bonds"] == str(BOND)
+    c.resolve_appeal(aid)
+    tranche = c.tranche(aid)
+    assert tranche["status"] == "audited"
+    assert tranche["appeal_resolved"] is True
+    assert tranche["payroll_band"] == "REJECTED_NON_DELIVERY"
+    assert tranche["worker_payout"] == "0"
+    assert tranche["bond_outcome"] == "forfeited"
+    assert c.vault_state()["active_appeal_bonds"] == "0"
     assert c.invariant() is True
 
 
