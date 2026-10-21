@@ -116,9 +116,21 @@ def execution_result(tx):
 
 
 def error_text(tx):
-    stderr = (leader_receipt(tx).get("genvm_result") or {}).get("stderr") or ""
+    receipt = leader_receipt(tx)
+    stderr = (receipt.get("genvm_result") or {}).get("stderr") or ""
     lines = [line.strip() for line in stderr.splitlines() if line.strip()]
-    return lines[-1][:300] if lines else ""
+    if lines:
+        return lines[-1][:300]
+    # gl.vm.UserError is returned as result = b"\x01" + message, not on stderr.
+    raw = receipt.get("result") or ""
+    try:
+        decoded = base64.b64decode(raw).decode("utf-8", "replace")
+        text = "".join(ch for ch in decoded if ch.isprintable()).strip()
+        if text and text != "exit_code 1":
+            return text[:300]
+    except Exception:
+        pass
+    return ""
 
 
 def consensus_summary(tx):

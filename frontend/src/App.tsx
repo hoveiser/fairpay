@@ -200,7 +200,7 @@ export default function App() {
               </div>
               <div className="flex items-center justify-between gap-3">
                 <span className="text-slate-500">Tests</span>
-                <span className="font-mono text-emerald-200">178 Direct Mode</span>
+                <span className="font-mono text-emerald-200">179 Direct Mode</span>
               </div>
               <div className="flex items-center justify-between gap-3">
                 <span className="text-slate-500">Source identity</span>

@@ -64,8 +64,25 @@ it to GitHub Pages at https://hoveiser.github.io/fairpay/.
 
 - `genvm-lint check contracts/contract.py`: lint and validation passed, 19 public methods (9 view, 10 write).
 - Direct Mode suite: **179 passing tests** (`pytest tests/ -q`), covering the PAPITO lock, mutual co-sign, all four bands, fail-closed parsing, prompt injection, URL allowlisting, access control, receipts, and the vault invariant.
-- Live StudioNet scenario: written by `scripts/run_milestone_scenario.py`, with raw explorer receipts under `evidence/milestone_txs/` and the summary in `evidence/milestone_scenario.json`. The exact audit band, guard reverts, receipts, and four-way sha256 identity are in [`docs/evidence.md`](docs/evidence.md).
-- Contract source identity: local LF file, git blob, raw GitHub blob, and `gen_getContractCode` all share one sha256. See `evidence/studionet_deployment.json`.
+- **Four-way sha256 identity:** `796f4661a0bf8d1830ca898196260b71dc1c7103d46fc019c417e547985a8f17` for the local LF file, the git blob at the deployed commit, the raw GitHub blob, and `gen_getContractCode` on StudioNet. Raw proof in [`docs/evidence.md`](docs/evidence.md) and `evidence/studionet_deployment.json`.
+
+### Live StudioNet proof (deployed commit `0a2b303`)
+
+| Check | Result |
+| --- | --- |
+| Live audit | `FULL_BONUS_PAYOUT`, anchor 100, 80 GEN payout, `MAJORITY_AGREE` |
+| Guard revert: premature surplus | `Appeal window open: liability locked` |
+| Guard revert: co-sign mismatch | `Co-sign bps mismatch` |
+| Guard revert: post-settlement mutation | `Agreement already settled` |
+| Mutual co-sign at 7000 bps | 21 GEN payout + 9 GEN refund |
+| Appeal resolution | anchor 80, bond forfeited, final payout 76 GEN + 4 GEN refund |
+| `transfer_tokens` | exact 1 GEN move |
+| Vault invariant | holds |
+| Guard reverts matched | 3 of 3 |
+
+Transaction hashes for every row are in [`docs/evidence.md`](docs/evidence.md). The raw
+explorer receipts are under `evidence/milestone_txs/` and the machine-readable
+summary is `evidence/milestone_scenario.json`.
 
 ## Reproduce the deployment
 

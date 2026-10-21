@@ -1,0 +1,440 @@
+{
+  "network": "studionet (chain id 61999)",
+  "contract": "0x56565F5Cf8eDF85ed5a82cA340Af9Ce0FBFF0E0a",
+  "deployed_commit": "0a2b303cdd5ebcb6a8ef35a6b3242b1aae41549e",
+  "employer": "0x3de43AA2f7162c80af98abe78222aE0Cdf83c506",
+  "worker": "0xCe37E76101D1f307e02a43947dBd55642C6C076E",
+  "evidence_url": "https://raw.githubusercontent.com/hoveiser/fairpay/0a2b303cdd5ebcb6a8ef35a6b3242b1aae41549e/docs/milestone-evidence.txt",
+  "params": {
+    "base_pay": "60000000000000000000",
+    "bonus_cap": "20000000000000000000",
+    "max_liability": "80000000000000000000",
+    "appeal_window_sec": 604800,
+    "appeal_bond": "2000000000000000000",
+    "deposit": "200000000000000000000",
+    "worker_funding": "5000000000000000000"
+  },
+  "txs": {
+    "deposit": {
+      "tx": "0x8267dbb6e703385b0c58fb8f5fd763532b26d6bfaf86aa49c8c61253d59bd547",
+      "ok": true,
+      "consensus": {
+        "status": "MAJORITY_AGREE",
+        "agree": 3,
+        "total": 5,
+        "nondet_disagree": null
+      }
+    },
+    "transfer_bond": {
+      "tx": "0x8b46c770325c36589418e316527b3ad199c18b79097e30690d3d965f129c3e56",
+      "ok": true,
+      "consensus": {
+        "status": "MAJORITY_AGREE",
+        "agree": 3,
+        "total": 5,
+        "nondet_disagree": null
+      }
+    },
+    "create_a1": {
+      "tx": "0x492b4e6c919a901ffa292c7174e1e49b9d30529ba2ff8d8a54cda0279293b48f",
+      "ok": true,
+      "consensus": {
+        "status": "MAJORITY_AGREE",
+        "agree": 5,
+        "total": 5,
+        "nondet_disagree": null
+      }
+    },
+    "submit_a1": {
+      "tx": "0x3853ea55baf3d2b3238590ace7fc44fef400bb37996537e8b6492cda2be5731b",
+      "ok": true,
+      "consensus": {
+        "status": "MAJORITY_AGREE",
+        "agree": 3,
+        "total": 5,
+        "nondet_disagree": null
+      }
+    },
+    "audit_a1": {
+      "tx": "0x003383cccbb9b6044e0fc7fa2c9f5561ba421ea7f781a69847fa904fc1a0e240",
+      "ok": true,
+      "consensus": {
+        "status": "MAJORITY_AGREE",
+        "agree": 3,
+        "total": 5,
+        "nondet_disagree": null
+      }
+    },
+    "recover_premature": {
+      "tx": "0xf73dc4c6b69d72116356de1eb09d6bd6d79360e9e4c56ea5545f9b09c6f2125b",
+      "ok": false,
+      "consensus": {
+        "status": "MAJORITY_AGREE",
+        "agree": 3,
+        "total": 5,
+        "nondet_disagree": null
+      }
+    },
+    "create_a2": {
+      "tx": "0x3e453283f7687e17e28d3a6f26f0c22372f05c169b2611410fc9bbe29d32583c",
+      "ok": true,
+      "consensus": {
+        "status": "MAJORITY_AGREE",
+        "agree": 4,
+        "total": 5,
+        "nondet_disagree": null
+      }
+    },
+    "mutual_single": {
+      "tx": "0xdf2dd608918c0a58b1dc05715e473f2a90764a66c3e7b69135d67f462fca2779",
+      "ok": true,
+      "consensus": {
+        "status": "MAJORITY_AGREE",
+        "agree": 3,
+        "total": 5,
+        "nondet_disagree": null
+      }
+    },
+    "mutual_match": {
+      "tx": "0xd9b40a85d24258468f2042d9bf87c8e1c4c70a3955c6d9028915ba22d69591ba",
+      "ok": true,
+      "consensus": {
+        "status": "MAJORITY_AGREE",
+        "agree": 4,
+        "total": 5,
+        "nondet_disagree": null
+      }
+    },
+    "mutual_after_settle": {
+      "tx": "0x81b8adf729cc45e4f6abfb36b74b31c42929ccff124a62b1db5252082119972f",
+      "ok": false,
+      "consensus": {
+        "status": "MAJORITY_AGREE",
+        "agree": 5,
+        "total": 5,
+        "nondet_disagree": null
+      }
+    },
+    "create_a3": {
+      "tx": "0x4ca235a0f7ec422845fd051a7bce36cd8086f7290a6c1c1e56df947e8a583efa",
+      "ok": true,
+      "consensus": {
+        "status": "MAJORITY_AGREE",
+        "agree": 5,
+        "total": 5,
+        "nondet_disagree": null
+      }
+    },
+    "mutual_a3_employer": {
+      "tx": "0x93c6b86bc93bfb35e1e442e170ab9d3c93b3f35689c286ef8845b737ebf8bfbc",
+      "ok": true,
+      "consensus": {
+        "status": "MAJORITY_AGREE",
+        "agree": 3,
+        "total": 5,
+        "nondet_disagree": null
+      }
+    },
+    "mutual_a3_mismatch": {
+      "tx": "0x231aede6691afcd46daa1112c86eaac4cf6af01052b764d23b939d67d6ad2dcb",
+      "ok": false,
+      "consensus": {
+        "status": "MAJORITY_AGREE",
+        "agree": 5,
+        "total": 5,
+        "nondet_disagree": null
+      }
+    },
+    "mutual_a3_match": {
+      "tx": "0x6b01677ae6d71a8b5517a98a1034c662edc972e3ab8aa6bb0834a0b1f9208228",
+      "ok": true,
+      "consensus": {
+        "status": "MAJORITY_AGREE",
+        "agree": 3,
+        "total": 5,
+        "nondet_disagree": null
+      }
+    },
+    "appeal_a1": {
+      "tx": "0xbfbaa46800cab6e8345385cd96bb310475c089e452413daae098b1ad347e723e",
+      "ok": true,
+      "consensus": {
+        "status": "MAJORITY_AGREE",
+        "agree": 3,
+        "total": 5,
+        "nondet_disagree": null
+      }
+    },
+    "resolve_a1": {
+      "tx": "0x22fe4ebf667e504bc95d22988df932ab0947d0d0fec1f6aae8335c9a2456c7c6",
+      "ok": true,
+      "consensus": {
+        "status": "MAJORITY_AGREE",
+        "agree": 3,
+        "total": 5,
+        "nondet_disagree": null
+      }
+    },
+    "settle_a1": {
+      "tx": "0x993b87ec0f28cb1698cf6ec167e175c5337823e4ead0d9faa08ab41b36c0408f",
+      "ok": true,
+      "consensus": {
+        "status": "MAJORITY_AGREE",
+        "agree": 3,
+        "total": 5,
+        "nondet_disagree": null
+      }
+    },
+    "transfer_tokens": {
+      "tx": "0xabc0b11860899fa26f83f0b04a64a708d4e411e64d44effc19e15baa3457b2e8",
+      "ok": true,
+      "consensus": {
+        "status": "MAJORITY_AGREE",
+        "agree": 3,
+        "total": 5,
+        "nondet_disagree": null
+      }
+    }
+  },
+  "guard_reverts": [
+    {
+      "name": "premature employer surplus withdrawal",
+      "tx": "0xf73dc4c6b69d72116356de1eb09d6bd6d79360e9e4c56ea5545f9b09c6f2125b",
+      "execution_result": "ERROR",
+      "error": "Appeal window open: liability locked",
+      "expected": "Appeal window open: liability locked",
+      "matched": true,
+      "consensus": {
+        "status": "MAJORITY_AGREE",
+        "agree": 3,
+        "total": 5,
+        "nondet_disagree": null
+      },
+      "error_source": "result_calldata"
+    },
+    {
+      "name": "post-settlement mutation",
+      "tx": "0x81b8adf729cc45e4f6abfb36b74b31c42929ccff124a62b1db5252082119972f",
+      "execution_result": "ERROR",
+      "error": "AssertionError: Agreement already settled",
+      "expected": "Agreement already settled",
+      "matched": true,
+      "consensus": {
+        "status": "MAJORITY_AGREE",
+        "agree": 5,
+        "total": 5,
+        "nondet_disagree": null
+      },
+      "error_source": "stderr"
+    },
+    {
+      "name": "single-party co-sign bps mismatch",
+      "tx": "0x231aede6691afcd46daa1112c86eaac4cf6af01052b764d23b939d67d6ad2dcb",
+      "execution_result": "ERROR",
+      "error": "Co-sign bps mismatch",
+      "expected": "Co-sign bps mismatch",
+      "matched": true,
+      "consensus": {
+        "status": "MAJORITY_AGREE",
+        "agree": 5,
+        "total": 5,
+        "nondet_disagree": null
+      },
+      "error_source": "result_calldata"
+    }
+  ],
+  "checks": {
+    "deposit_minted_fpt": true,
+    "worker_funded": true,
+    "agreement_1_locked": true,
+    "submission_sealed": true,
+    "audit_finalized_majority": true,
+    "premature_recovery_reverted": true,
+    "single_party_does_not_settle": true,
+    "matching_cosign_settles": true,
+    "post_settlement_mutation_reverted": true,
+    "cosign_mismatch_reverted": true,
+    "mismatch_then_match_settles": true,
+    "appeal_accepted": true,
+    "appeal_resolved_by_consensus": true,
+    "payout_matches_receipt": true,
+    "transfer_tokens_moved_exactly": true,
+    "vault_invariant_holds": true,
+    "three_guard_reverts_matched": true
+  },
+  "employer_fpt_after_deposit": 200000000000000000000,
+  "worker_fpt_after_funding": 5000000000000000000,
+  "agreement_1": 1,
+  "agreement_1_after_audit": {
+    "id": 1,
+    "employer": "0x3de43AA2f7162c80af98abe78222aE0Cdf83c506",
+    "worker": "0xCe37E76101D1f307e02a43947dBd55642C6C076E",
+    "role": "release engineer",
+    "rubric": "Deliver a Milestone v1 release note that explains the funded FPT vault, the PAPITO maximum-liability lock, the two-party mutual co-sign, and the discrete consensus band audit, and lists the test checklist and the deployed contract address.",
+    "base_pay": "60000000000000000000",
+    "bonus_cap": "20000000000000000000",
+    "max_liability": "80000000000000000000",
+    "tranche_count": 1,
+    "tranche_bases": [
+      "60000000000000000000"
+    ],
+    "tranche_bonuses": [
+      "20000000000000000000"
+    ],
+    "tranche_maxima": [
+      "80000000000000000000"
+    ],
+    "tranche_indexes": [
+      "0"
+    ],
+    "appeal_window_sec": 604800,
+    "appeal_bond": "2000000000000000000",
+    "locked_amount": "80000000000000000000",
+    "status": "AUDITED",
+    "surplus_recovered": false,
+    "mutual": {
+      "employer_bps": null,
+      "worker_bps": null,
+      "employer_signed": false,
+      "worker_signed": false
+    },
+    "created_at": 1792560588,
+    "settled_at": null,
+    "receipt_id": null
+  },
+  "tranche_1": {
+    "agreement_id": 1,
+    "index": 0,
+    "hours": 40,
+    "timesheet": "Completed the Milestone v1 release note and security checklist. The note documents the funded FPT vault, the PAPITO lock, the co-sign guard, the 0/50/80/100 anchor ladder, and the live deployment proof.",
+    "evidence_urls": [
+      "https://raw.githubusercontent.com/hoveiser/fairpay/0a2b303cdd5ebcb6a8ef35a6b3242b1aae41549e/docs/milestone-evidence.txt"
+    ],
+    "evidence_hash": "0fef7f3b8b9943c5ccf93c1511c769c6d4083d517b1bcbeb8a8d3c827a4c4563",
+    "submitted_at": 1792560635,
+    "status": "audited",
+    "payroll_band": "FULL_BONUS_PAYOUT",
+    "delivery_anchor": 100,
+    "evidence_authenticated": true,
+    "delivery_score": 90,
+    "worker_payout": "80000000000000000000",
+    "audited_at": 1792560679,
+    "appeal_deadline_clock": 1793165479,
+    "appeals_used": 0,
+    "appeal_bond_posted": "0",
+    "appeal_filed_at": null,
+    "appeal_resolved_at": null,
+    "appeal_resolved": false,
+    "bond_outcome": "none",
+    "original_anchor_at_audit": 100,
+    "ai_reasoning": "Evidence provides full release note, checklist, and contract address covering all rubric items",
+    "outcome": "AUDITED"
+  },
+  "audit": {
+    "ok": true,
+    "payroll_band": "FULL_BONUS_PAYOUT",
+    "delivery_anchor": 100,
+    "evidence_authenticated": true,
+    "delivery_score": 90,
+    "worker_payout": "80000000000000000000",
+    "consensus": {
+      "status": "MAJORITY_AGREE",
+      "agree": 3,
+      "total": 5,
+      "nondet_disagree": null
+    },
+    "finalized": true
+  },
+  "agreement_2": 2,
+  "mutual_single": {
+    "status": "OPEN",
+    "employer_signed": true,
+    "worker_signed": false,
+    "vault_before": "110000000000000000000",
+    "vault_after": "110000000000000000000"
+  },
+  "mutual_settlement": {
+    "status": "SETTLED",
+    "receipt": {
+      "receipt_id": 1,
+      "agreement_id": 2,
+      "kind": "MUTUAL",
+      "worker": "0xCe37E76101D1f307e02a43947dBd55642C6C076E",
+      "employer": "0x3de43AA2f7162c80af98abe78222aE0Cdf83c506",
+      "worker_payout": "21000000000000000000",
+      "employer_refund": "9000000000000000000",
+      "payroll_band": "MUTUAL_COSIGN",
+      "delivery_anchor": 0,
+      "mutual_bps": 7000,
+      "bonds_refunded": "0",
+      "bonds_forfeited": "0",
+      "settled_at": 1792560868
+    },
+    "expected_payout": "21000000000000000000"
+  },
+  "agreement_3": 3,
+  "appeal": {
+    "status": "appealed",
+    "bond_posted": "2000000000000000000",
+    "worker_fpt_after_bond": 42000000000000000000
+  },
+  "appeal_resolution": {
+    "ok": true,
+    "payroll_band": "STANDARD_TARGET_PAYOUT",
+    "delivery_anchor": 80,
+    "worker_payout": "76000000000000000000",
+    "bond_outcome": "forfeited",
+    "appeal_resolved": true,
+    "consensus": {
+      "status": "MAJORITY_AGREE",
+      "agree": 3,
+      "total": 5,
+      "nondet_disagree": null
+    }
+  },
+  "settlement": {
+    "status": "SETTLED",
+    "receipt": {
+      "receipt_id": 3,
+      "agreement_id": 1,
+      "kind": "AUDITED",
+      "worker": "0xCe37E76101D1f307e02a43947dBd55642C6C076E",
+      "employer": "0x3de43AA2f7162c80af98abe78222aE0Cdf83c506",
+      "worker_payout": "76000000000000000000",
+      "employer_refund": "4000000000000000000",
+      "payroll_band": "STANDARD_TARGET_PAYOUT",
+      "delivery_anchor": 80,
+      "mutual_bps": 0,
+      "bonds_refunded": "0",
+      "bonds_forfeited": "2000000000000000000",
+      "settled_at": 1792561260
+    },
+    "worker_fpt_before": 42000000000000000000,
+    "worker_fpt_after": 118000000000000000000,
+    "delta": 76000000000000000000
+  },
+  "token_transfer": {
+    "amount": "1000000000000000000",
+    "worker_before": 118000000000000000000,
+    "worker_after": 117000000000000000000,
+    "employer_before": 82000000000000000000,
+    "employer_after": 83000000000000000000
+  },
+  "vault_state": {
+    "vault_custody_balance": "0",
+    "locked_payroll_escrows": "0",
+    "active_appeal_bonds": "0",
+    "invariant_holds": true,
+    "total_fpt_supply": "200000000000000000000",
+    "native_backing": "200000000000000000000",
+    "native_backed": true,
+    "agreement_count": 3
+  },
+  "check_vault_invariants": true,
+  "final_fpt_balances": {
+    "employer": 83000000000000000000,
+    "worker": 117000000000000000000
+  },
+  "guard_revert_count": 3,
+  "all_checks_passed": true
+}

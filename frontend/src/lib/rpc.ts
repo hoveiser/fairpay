@@ -83,12 +83,15 @@ export async function loadLiveState(): Promise<LiveState> {
   let agreement: Agreement | null = null;
   let tranche: Tranche | null = null;
   if (count > 0) {
-    const raw = await read<string>("get_agreement", [count]);
+    // Use the first agreement so the panel shows the audited tranche even when
+    // later agreements were settled by mutual co-sign and never had evidence.
+    const snapshotId = 1;
+    const raw = await read<string>("get_agreement", [snapshotId]);
     const parsed = JSON.parse(raw) as Agreement;
     if (parsed && parsed.id) agreement = parsed;
     if (agreement && agreement.tranche_indexes.length > 0) {
       const tRaw = await read<string>("get_tranche", [
-        count,
+        snapshotId,
         Number(agreement.tranche_indexes[0]),
       ]);
       const parsedTranche = JSON.parse(tRaw) as Tranche;

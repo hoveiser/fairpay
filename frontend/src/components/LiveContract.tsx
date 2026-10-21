@@ -210,7 +210,7 @@ export default function LiveContract() {
               <div className="rounded-2xl bg-white/[0.03] p-4 ring-1 ring-white/10">
                 <div className="flex items-center justify-between">
                   <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-                    Latest agreement
+                    Agreement snapshot
                   </span>
                   <span className="rounded-full bg-violet-500/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-violet-200 ring-1 ring-violet-400/30">
                     #{agreement.id} {agreement.status}
