@@ -46,7 +46,7 @@ CAPTIONS = [
      ["Vault, locks, bonds, and the invariant come from the deployed contract",
       "Four to five gen_call requests on load, no polling"]),
     (42, 48, "Verified on StudioNet",
-     ["179 Direct Mode tests, byte-identical source, four-way sha256",
+     ["180 Direct Mode tests, byte-identical source, four-way sha256",
       "github.com/hoveiser/fairpay"]),
 ]
 

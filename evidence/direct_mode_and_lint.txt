@@ -1,5 +1,5 @@
 FairPay Milestone v1 direct-mode and lint evidence
-Generated: 2026-10-21T05:27:18Z
+Generated: 2026-10-21T06:03:05Z
 
 $ .venv/bin/genvm-lint check contracts/contract.py
 ✓ Lint passed (3 checks)
@@ -9,8 +9,8 @@ $ .venv/bin/genvm-lint check contracts/contract.py
 
 $ .venv/bin/python -m pytest tests/ -q
 ........................................................................ [ 80%]
-...................................                                      [100%]
-179 passed in 4.01s
+....................................                                     [100%]
+180 passed in 3.93s
 
-contract bytes: 37578
+contract bytes: 37560
 direct test files: 11
