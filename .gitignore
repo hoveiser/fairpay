@@ -1,6 +1,7 @@
 # secrets - never commit
 .env
 .env.*
+!.env.example
 *.key
 keystore*.json
 
@@ -14,3 +15,13 @@ __pycache__/
 .pytest_cache/
 .gltest_cache/
 artifacts/
+
+# frontend / node
+node_modules/
+dist/
+*.webm
+*.wav
+
+# the final demo video is an intentional binary artifact
+!docs/demo-video-subtitled.mp4
+!frontend/public/demo-video-subtitled.mp4

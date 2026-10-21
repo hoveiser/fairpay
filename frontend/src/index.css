@@ -12,14 +12,48 @@ body,
   min-height: 100%;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   background:
-    radial-gradient(1200px 600px at 15% -10%, rgba(255, 122, 26, 0.18), transparent 60%),
-    radial-gradient(1000px 700px at 100% 0%, rgba(139, 92, 246, 0.22), transparent 55%),
-    #0b0a14;
+    radial-gradient(1100px 600px at 10% -10%, rgba(139, 92, 246, 0.18), transparent 60%),
+    radial-gradient(900px 600px at 100% 0%, rgba(34, 211, 238, 0.08), transparent 55%),
+    #070b14;
   color: #e7e5f2;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(139, 92, 246, 0.45);
+  color: #ffffff;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.35) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+  border-radius: 999px;
+}
+
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.055) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse at 50% 0%, black 35%, transparent 78%);
 }
 
 .glass {
@@ -32,6 +66,44 @@ body {
   transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-input[type="range"] {
-  accent-color: #ff7a1a;
+input[type="range"].range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(139, 92, 246, 0.75), rgba(34, 211, 238, 0.55));
+  outline: none;
+}
+
+input[type="range"].range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: #f5f3ff;
+  border: 3px solid #8b5cf6;
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.18);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+input[type="range"].range::-webkit-slider-thumb:hover {
+  transform: scale(1.08);
+}
+
+input[type="range"].range::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: #f5f3ff;
+  border: 3px solid #8b5cf6;
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.18);
+  cursor: pointer;
+}
+
+input[type="range"].range::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(139, 92, 246, 0.75), rgba(34, 211, 238, 0.55));
 }
